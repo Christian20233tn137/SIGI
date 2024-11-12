@@ -1,7 +1,6 @@
 package integradora.SIGI.categoria.control;
 
 import integradora.SIGI.categoria.model.CategoriaDTO;
-import integradora.SIGI.categoria.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +40,7 @@ public class CategoriaController {
 
     @PutMapping("/cambiar-estado")
     public ResponseEntity<Object> cambiarEstadoCategoria(@RequestBody CategoriaDTO categoriaDTO) {
-        return categoriaService.cambiarEstadoCategoria(categoriaDTO.getId());
+        return categoriaService.cambiarEstadoCategoria(categoriaDTO);
     }
 
 }

@@ -1,4 +1,4 @@
-package integradora.SIGI.categoria.service;
+package integradora.SIGI.categoria.control;
 
 import integradora.SIGI.categoria.model.Categoria;
 import integradora.SIGI.categoria.model.CategoriaDTO;
@@ -89,8 +89,8 @@ public class CategoriaService {
 
     // Cambiar estado de categoría (habilitar/deshabilitar)
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Object> cambiarEstadoCategoria(Long id) {
-        Optional<Categoria> categoriaOpt = repository.findById(id);
+    public ResponseEntity<Object> cambiarEstadoCategoria(CategoriaDTO categoriaDTO) {
+        Optional<Categoria> categoriaOpt = repository.findById(categoriaDTO.getId());
         if (!categoriaOpt.isPresent()) {
             return new ResponseEntity<>(new Message("Categoría no encontrada", TypesResponse.WARNING), HttpStatus.NOT_FOUND);
         }
@@ -102,4 +102,6 @@ public class CategoriaService {
         String estado = categoria.isStatus() ? "habilitada" : "deshabilitada";
         return new ResponseEntity<>(new Message(categoria, "Categoría " + estado + " exitosamente", TypesResponse.SUCCESS), HttpStatus.OK);
     }
+
+
 }
