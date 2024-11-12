@@ -1,10 +1,10 @@
-package integradora.SIGI.model;
+package integradora.SIGI.categoria.model;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="categorias")
-public class Categorias {
+public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,17 +17,17 @@ public class Categorias {
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
-    public Categorias(){
+    public Categoria(){
 
     }
 
-    public Categorias(String name, String description, boolean status) {
+    public Categoria(String name, String description, boolean status) {
         this.name = name;
         this.description = description;
         this.status = status;
     }
 
-    public Categorias(Long id, String name, String description, boolean status) {
+    public Categoria(Long id, String name, String description, boolean status) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -1,10 +1,10 @@
-package integradora.SIGI.model;
+package integradora.SIGI.proveedores.model;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="proveedores")
-public class Proveedores {
+public class Proveedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,11 +24,11 @@ public class Proveedores {
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
-    public Proveedores(){
+    public Proveedor(){
 
     }
 
-    public Proveedores(String rfc, String direccion, String telefono, String email, boolean status) {
+    public Proveedor(String rfc, String direccion, String telefono, String email, boolean status) {
         this.rfc = rfc;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -36,7 +36,7 @@ public class Proveedores {
         this.status = status;
     }
 
-    public Proveedores(Long id, String rfc, String direccion, String telefono, String email, boolean status) {
+    public Proveedor(Long id, String rfc, String direccion, String telefono, String email, boolean status) {
         this.id = id;
         this.rfc = rfc;
         this.direccion = direccion;

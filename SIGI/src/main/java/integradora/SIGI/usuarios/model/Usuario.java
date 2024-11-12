@@ -1,11 +1,10 @@
-package integradora.SIGI.model;
+package integradora.SIGI.usuarios.model;
 
 import jakarta.persistence.*;
-import org.hibernate.tool.schema.spi.SchemaTruncator;
 
 @Entity
 @Table(name="productos")
-public class Usuarios {
+public class Usuario {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -28,11 +27,11 @@ public class Usuarios {
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
-    public Usuarios(){
+    public Usuario(){
 
     }
 
-    public Usuarios(String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
+    public Usuario(String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
@@ -42,7 +41,7 @@ public class Usuarios {
         this.status=status;
     }
 
-    public Usuarios(Long id,String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
+    public Usuario(Long id, String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
         this.id=id;
         this.name = name;
         this.lastname = lastname;
