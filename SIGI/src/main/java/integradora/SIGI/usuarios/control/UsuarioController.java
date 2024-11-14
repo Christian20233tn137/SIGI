@@ -48,4 +48,14 @@ public class UsuarioController {
         return usuarioService.changeStatusUsuario(usuarioDTO);
     }
 
+    @PostMapping("/send-email")
+    public ResponseEntity<Object> save(@Validated({UsuarioDTO.FindByEmail.class}) @RequestBody UsuarioDTO dto){
+        return usuarioService.sendEmail(dto);
+    }
+
+    @PostMapping("/verify-code")
+    public ResponseEntity<Object> verifyCode(@Validated({UsuarioDTO.VerifyCode.class}) @RequestBody UsuarioDTO dto){
+        return usuarioService.verifyCode(dto);
+    }
+
 }

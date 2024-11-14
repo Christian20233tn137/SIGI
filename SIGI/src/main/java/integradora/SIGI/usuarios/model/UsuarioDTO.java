@@ -25,6 +25,9 @@ public class UsuarioDTO {
     @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
     private String rol;
 
+    @NotBlank(groups = {VerifyCode.class})
+    private String code;
+
     public UsuarioDTO() {
     }
 
@@ -84,7 +87,17 @@ public class UsuarioDTO {
         this.rol = rol;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public interface Register{}
     public interface Modify{}
     public interface ChangeStatus{}
+    public interface FindByEmail {}
+    public interface VerifyCode {}
 }

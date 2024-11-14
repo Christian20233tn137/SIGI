@@ -27,6 +27,8 @@ public class Usuario {
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
+    @Column(name = "code", columnDefinition = "VARCHAR(10)")
+    private String code;
     public Usuario(){
 
     }
@@ -114,5 +116,13 @@ public class Usuario {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
