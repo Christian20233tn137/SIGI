@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.header {
+    background-color: #005D57;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.header .menu-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.header .user-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px); /* Resta espacio del header y footer */
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.action-card {
+    background-color: #008A7D;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.action-card:hover {
+    transform: scale(1.05);
+}
+
+.action-card i {
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.action-button {
+    background-color: #66AFA3;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.footer {
+    background-color: #008A7D;
+    height: 50px;
+    width: 100%;
+}
