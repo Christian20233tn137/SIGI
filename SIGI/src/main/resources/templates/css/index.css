@@ -11,7 +11,14 @@ body, html {
     height: 100vh; /* Asegura que el fondo ocupe la altura completa */
 }
 
-
+.background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Envía la imagen al fondo */
+}
 
 /* Contenedor del formulario */
 .form-container {
