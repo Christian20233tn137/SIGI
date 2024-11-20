@@ -1,8 +1,5 @@
-package integradora.SIGI.categoria.control;
+package integradora.SIGI.categoria.model;
 
-import integradora.SIGI.categoria.model.Categoria;
-import integradora.SIGI.categoria.model.CategoriaDTO;
-import integradora.SIGI.categoria.model.CategoriaRepository;
 import integradora.SIGI.utils.Message;
 import integradora.SIGI.utils.TypesResponse;
 import org.slf4j.Logger;

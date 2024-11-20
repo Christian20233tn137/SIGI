@@ -1,6 +1,7 @@
 package integradora.SIGI.categoria.control;
 
 import integradora.SIGI.categoria.model.CategoriaDTO;
+import integradora.SIGI.categoria.model.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
