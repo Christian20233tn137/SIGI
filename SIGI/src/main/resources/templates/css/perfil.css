@@ -14,7 +14,7 @@ body {
 .sidebar {
     width: 70px; /* Sidebar compacta */
     background: linear-gradient(to bottom, #1f5a51, #1f5a51);
-    height: calc(100% - 45px);
+    height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@ body {
     transition: width 0.3s;
     position: fixed;
     overflow: hidden;
-    top: 45px;
+    top: 60px;
     z-index: 999;
 }
 
