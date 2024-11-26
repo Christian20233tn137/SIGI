@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Registro</title>
+    <title>Formulario de Registro de Productos</title>
     <link rel="stylesheet" href="css/RegisterProduct.css">
 </head>
 <body>
@@ -48,37 +48,41 @@
     <br>
     <div class="form-container">
         <div class="form-header">
-            <h2>REGISTRO DE USUARIO</h2>
+            <h2>REGISTRO DE PRODUCTOS</h2>
         </div>
         <form class="registration-form">
             <div class="form-row">
                 <div class="form-group">
-                    <label for="first-name">NOMBRES*</label>
-                    <input type="text" id="first-name" placeholder="Ingresa tus nombres">
+                    <label for="name">NOMBRE*</label>
+                    <input type="text" id="NameProduct" placeholder="Ingresa tus nombres">
                 </div>
                 <div class="form-group">
-                    <label for="phone">TELÉFONO*</label>
-                    <input type="text" id="phone" placeholder="Ingresa tu teléfono">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="last-name">APELLIDOS*</label>
-                    <input type="text" id="last-name" placeholder="Ingresa tus apellidos">
-                </div>
-                <div class="form-group">
-                    <label for="password">CONTRASEÑA*</label>
-                    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+                    <label for="precio">PRECIO UNITARIO*</label>
+                    <input type="number" id="PrecioUnitario" placeholder="Ingresa tu teléfono">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="email">CORREO ELECTRÓNICO*</label>
-                    <input type="email" id="email" placeholder="Ingresa tu correo">
+                    <label for="categoria">CATEGORÍA*</label>
+                    <select id="CategoriaProducto" name="categoria" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="categoria1">Categoría 1</option>
+                        <option value="categoria2">Categoría 2</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="confirm-password">CONFIRMAR CONTRASEÑA*</label>
-                    <input type="password" id="confirm-password" placeholder="Confirma tu contraseña">
+                    <label for="proveedor">PROVEEDOR*</label>
+                    <select id="proveedor" name="proveedor" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="proveedor1">Proveedor 1</option>
+                        <option value="proveedor2">Proveedor 2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cantidad">CANTIDAD*</label>
+                    <input type="number" id="cantidad" placeholder="Ingresa la cantidad">
                 </div>
             </div>
             <div class="form-footer">
