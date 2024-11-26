@@ -4,7 +4,6 @@ body, html {
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-image: url('img/fondo.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -19,6 +18,151 @@ body, html {
     height: 100%;
     z-index: -1; /* Envía la imagen al fondo */
 }
+
+.sidebar {
+    width: 70px; /* Sidebar compacta */
+    background: linear-gradient(to bottom, #1f5a51, #1f5a51);
+    height: calc(100% - 1px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 2px 0 5px rgba(255, 255, 255, 0.992);
+    transition: width 0.3s;
+    position: fixed;
+    overflow: hidden;
+    top: 0px;
+    z-index: 999;
+}
+
+.sidebar:hover {
+    width: 250px; /* Sidebar expandida */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 10px;
+    width: 100%;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.logo span {
+    font-weight: 700;
+    display: none;
+    white-space: nowrap;
+}
+
+.sidebar:hover .logo span {
+    display: block;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    color: white;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.menu-item:hover {
+    background-color: #e0e0e0;
+}
+
+.menu-item .icon {
+    font-size: 20px;
+    text-align: center;
+    width: 40px;
+}
+
+.menu-item span {
+    display: none;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.sidebar:hover .menu-item span {
+    display: block;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    gap: 10px;
+    width: 100%;
+    border-top: 1px solid #ddd;
+    color: white;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.profile div {
+    display: none;
+}
+
+.sidebar:hover .profile div {
+    display: block;
+}
+
+.profile p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.profile small {
+    color: gray;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 50px;
+    }
+    .sidebar:hover {
+        width: 180px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Contenedor del formulario */
 .form-container {
