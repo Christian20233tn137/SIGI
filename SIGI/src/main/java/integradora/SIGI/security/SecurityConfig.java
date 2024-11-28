@@ -1,5 +1,6 @@
 package integradora.SIGI.security;
 
+import integradora.SIGI.usuarios.control.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()  // Esta es la forma válida actualmente, pero es posible que se cambie en futuras versiones
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll() // Endpoints públicos
+                        .requestMatchers("/auth" , "/usuario").permitAll() // Endpoints públicos
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

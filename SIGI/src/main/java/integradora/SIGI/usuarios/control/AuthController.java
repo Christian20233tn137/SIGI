@@ -3,7 +3,6 @@ package integradora.SIGI.usuarios.control;
 import integradora.SIGI.security.AuthRequest;
 import integradora.SIGI.security.AuthResponse;
 import integradora.SIGI.security.JwtUtil;
-import integradora.SIGI.security.UsuarioDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

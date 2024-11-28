@@ -1,4 +1,4 @@
-package integradora.SIGI.security;
+package integradora.SIGI.usuarios.control;
 
 import integradora.SIGI.usuarios.model.Usuario;
 import integradora.SIGI.usuarios.model.UsuarioRepository;
