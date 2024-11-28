@@ -1,8 +1,13 @@
 package integradora.SIGI.producto.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import integradora.SIGI.categoria.model.Categoria;
+import integradora.SIGI.proveedores.model.Proveedor;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "productos")
@@ -25,6 +30,12 @@ public class Producto {
 
     @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean status = true;
+
+    @ManyToOne
+    private Categoria categorias;
+    @ManyToMany
+    @JsonIgnore
+    private List<Proveedor> proveedores;
 
     // Constructor por defecto
     public Producto() {

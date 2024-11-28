@@ -1,6 +1,10 @@
 package integradora.SIGI.categoria.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import integradora.SIGI.producto.model.Producto;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="categorias")
@@ -16,6 +20,18 @@ public class Categoria {
 
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
+
+    @OneToMany(mappedBy = "categorias")
+    @JsonIgnore
+    private List<Producto> productos;
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 
     public Categoria(){
 

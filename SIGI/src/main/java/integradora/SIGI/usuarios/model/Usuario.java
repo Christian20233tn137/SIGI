@@ -3,7 +3,7 @@ package integradora.SIGI.usuarios.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="productos")
+@Table(name="usuarios")
 public class Usuario {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -1,6 +1,10 @@
 package integradora.SIGI.proveedores.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import integradora.SIGI.producto.model.Producto;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="proveedores")
@@ -12,7 +16,7 @@ public class Proveedor {
     @Column(name="rfc", columnDefinition = "VARCHAR(13)")
     private String rfc;
 
-    @Column(name="direccion",columnDefinition = "VARVCHAR(100)")
+    @Column(name="direccion",columnDefinition = "VARCHAR(100)")
     private String direccion;
 
     @Column(name="telefono",columnDefinition = "VARCHAR(10)")
@@ -23,6 +27,18 @@ public class Proveedor {
 
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
+
+    @ManyToMany(mappedBy = "proveedores")
+    @JsonIgnore
+    private List<Producto> productos;
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 
     public Proveedor(){
 
