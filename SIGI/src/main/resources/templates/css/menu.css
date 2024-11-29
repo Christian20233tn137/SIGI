@@ -14,6 +14,25 @@ body {
     z-index: -1; /* Envía la imagen al fondo */
 }
 
+/*Estilos icono salida */
+.logout-icon {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* Centra verticalmente el icono y el texto */
+}
+
+.logout-icon i {
+    margin-right: 5px;
+    font-size: 1.7rem;
+}
+
+.logout-icon:hover {
+    color: #07f686;
+}
+ 
+
 .header {
     background-color: #005D57;
     color: white;
@@ -22,10 +41,10 @@ body {
     position: relative;
 }
 
-.header .menu-icon {
+.header .logout-icon  {
     position: absolute;
-    left: 10px;
-    top: 10px;
+    right: 10px;
+    top: 60px;
     font-size: 20px;
     cursor: pointer;
 }
