@@ -199,12 +199,24 @@ body, html {
 }
 
 .search-bar input {
-    width: 50%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px; 
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
 }
-.search-button, .filter-button, .plus-button{
+.search-button, .filter-button {
+    padding: 10px 20px;
+    background-color: #2c786c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.plus-button{
     padding: 10px 20px;
     background-color: #2c786c;
     color: white;
@@ -282,7 +294,7 @@ body, html {
 
 /* Table Styles */
 .provider-table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
     margin: 20px auto;
     max-width: 1200px;
@@ -293,11 +305,25 @@ body, html {
     color: white;
 }
 
-.provider-table th, .product-table td {
-    border: 1px solid #ddd;
+.provider-table th {
+    border: 3px solid #2c786c;
     padding: 10px;
     text-align: center;
     font-size: 16px;
+}
+
+.product-table  td a, td button {
+    display: inline-flex; 
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px; 
+    margin: 5px; 
+    border: none;
+    border-radius: 5px; 
+    text-decoration: none; 
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; 
 }
 
 .provider-table td {
@@ -305,7 +331,7 @@ body, html {
 }
 
 .action-button {
-    background-color: #2c786c;
+    background-color: #0804ec;
     color: white;
     padding: 8px 16px;
     border: none;
