@@ -40,28 +40,26 @@ document.getElementById("searchInput").addEventListener("input", filterTable);
 
 
 
-
-
-
-
-
-
-
 // Registro de categorias 
+document.getElementById("addCategoryButton").addEventListener("click", () => {
+    document.getElementById("categoryModal").style.display = "block";
+});
+
+document.getElementById("closeModalButton").addEventListener("click", () => {
+    document.getElementById("categoryModal").style.display = "none";
+});
+
 function registrarCategoria() {
-    // Obtén los valores de los inputs
     const nombre = document.getElementById("nombreCategoria").value;
     const descripcion = document.getElementById("descripcionCategoria").value;
 
-    // Crea el objeto a enviar
     const categoria = {
         nombre: nombre,
         descripcion: descripcion,
-        estado: true // Por defecto, las categorías se registran activas
+        estado: true
     };
 
-    // Realiza la solicitud POST al backend
-    fetch("/http://localhost:8080categorias", {
+    fetch("http://localhost:8080/categorias", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -69,15 +67,13 @@ function registrarCategoria() {
         body: JSON.stringify(categoria)
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error("Error al registrar la categoría");
-            }
+            if (!response.ok) throw new Error("Error al registrar la categoría");
             return response.json();
         })
         .then(data => {
             alert("¡Categoría registrada con éxito!");
-            cerrarModal(); // Cierra el modal
-            cargarCategorias(); // Actualiza la tabla
+            agregarCategoriaATabla(data);
+            document.getElementById("categoryModal").style.display = "none";
         })
         .catch(error => {
             console.error("Error:", error);
@@ -85,12 +81,9 @@ function registrarCategoria() {
         });
 }
 
-
-//Agregar categoria a tabla 
 function agregarCategoriaATabla(categoria) {
     const tbody = document.querySelector(".provider-table tbody");
 
-    // Crea una nueva fila
     const row = document.createElement("tr");
     row.innerHTML = `
         <td>${categoria.nombre}</td>
@@ -109,6 +102,5 @@ function agregarCategoriaATabla(categoria) {
         </td>
     `;
 
-    // Añade la nueva fila al cuerpo de la tabla
     tbody.appendChild(row);
 }
