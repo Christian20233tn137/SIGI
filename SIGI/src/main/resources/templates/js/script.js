@@ -41,3 +41,74 @@ document.getElementById("searchInput").addEventListener("input", filterTable);
 
 
 
+
+
+
+
+
+
+// Registro de categorias 
+function registrarCategoria() {
+    // Obtén los valores de los inputs
+    const nombre = document.getElementById("nombreCategoria").value;
+    const descripcion = document.getElementById("descripcionCategoria").value;
+
+    // Crea el objeto a enviar
+    const categoria = {
+        nombre: nombre,
+        descripcion: descripcion,
+        estado: true // Por defecto, las categorías se registran activas
+    };
+
+    // Realiza la solicitud POST al backend
+    fetch("/categorias", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(categoria)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al registrar la categoría");
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert("¡Categoría registrada con éxito!");
+            cerrarModal(); // Cierra el modal
+            cargarCategorias(); // Actualiza la tabla
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Ocurrió un error al registrar la categoría.");
+        });
+}
+
+
+//Agregar categoria a tabla 
+function agregarCategoriaATabla(categoria) {
+    const tbody = document.querySelector(".provider-table tbody");
+
+    // Crea una nueva fila
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${categoria.nombre}</td>
+        <td>${categoria.descripcion}</td>
+        <td>${categoria.estado ? "Activo" : "Inactivo"}</td>
+        <td>
+            <button class="action-button" onclick="editarCategoria(${categoria.id})">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="habilitar" onclick="cambiarEstadoCategoria(${categoria.id}, true)">
+                <i class="fas fa-check-circle"> Habilitar</i>
+            </button>
+            <button class="deshabilitar" onclick="cambiarEstadoCategoria(${categoria.id}, false)">
+                <i class="fas fa-times-circle"> Deshabilitar</i>
+            </button>
+        </td>
+    `;
+
+    // Añade la nueva fila al cuerpo de la tabla
+    tbody.appendChild(row);
+}
