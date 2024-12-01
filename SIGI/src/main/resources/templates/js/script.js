@@ -1,25 +1,32 @@
-// Selecciona el botón para abrir el modal y el modal mismo
-const openModal = document.querySelector('.plus-button');
-const modal = document.querySelector('.modal');
+// Función para recuperar las categorías de la base de datos y mostrarlas en la tabla
+function obtenerCategorias() {
+    fetch("http://localhost:8080/categorias")
+        .then(response => {
+            if (!response.ok) throw new Error("Error al obtener las categorías");
+            return response.json();
+        })
+        .then(data => {
+            // Limpiar la tabla antes de llenarla
+            const tbody = document.querySelector(".provider-table tbody");
+            tbody.innerHTML = '';
 
-// Selecciona el botón para cerrar el modal
-const closeModal = document.querySelector('.close-modal');
+            // Iteramos sobre los datos y los agregamos a la tabla
+            data.forEach(categoria => {
+                agregarCategoriaATabla(categoria);
+            });
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Ocurrió un error al obtener las categorías.");
+        });
+}
 
-// Agregar evento al botón para abrir el modal
-openModal.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevenir comportamientos predeterminados
-    modal.classList.add('modal-show'); // Mostrar modal
-});
+// Llamar a la función obtenerCategorias al cargar la página
+document.addEventListener("DOMContentLoaded", obtenerCategorias);
 
-// Agregar evento al botón para cerrar el modal
-closeModal.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal.classList.remove('modal-show'); // Ocultar modal
-});
-
-//Codigo para el buscador 
- // Función para filtrar la tabla
- function filterTable() {
+// Código para el buscador
+// Función para filtrar la tabla
+function filterTable() {
     const searchInput = document.getElementById("searchInput").value.toLowerCase(); // Obtener el valor del input en minúsculas
     const rows = document.querySelectorAll(".provider-table tbody tr"); // Seleccionar todas las filas del cuerpo de la tabla
 
@@ -38,9 +45,7 @@ closeModal.addEventListener('click', (e) => {
 // Asignar el evento al input
 document.getElementById("searchInput").addEventListener("input", filterTable);
 
-
-
-// Registro de categorias 
+// Registro de categorías
 document.getElementById("addCategoryButton").addEventListener("click", () => {
     document.getElementById("categoryModal").style.display = "block";
 });
@@ -49,6 +54,7 @@ document.getElementById("closeModalButton").addEventListener("click", () => {
     document.getElementById("categoryModal").style.display = "none";
 });
 
+// Registrar categoría
 function registrarCategoria() {
     const nombre = document.getElementById("nombreCategoria").value;
     const descripcion = document.getElementById("descripcionCategoria").value;
@@ -81,6 +87,7 @@ function registrarCategoria() {
         });
 }
 
+// Agregar la categoría a la tabla
 function agregarCategoriaATabla(categoria) {
     const tbody = document.querySelector(".provider-table tbody");
 
@@ -93,10 +100,10 @@ function agregarCategoriaATabla(categoria) {
             <button class="action-button" onclick="editarCategoria(${categoria.id})">
                 <i class="fas fa-edit"></i>
             </button>
-            <button class="habilitar" onclick="cambiarEstadoCategoria(${categoria.id}, true)">
+            <button class="habilitar" onclick="cambiarEstadoCategoria(${categoria.id}, true, this)">
                 <i class="fas fa-check-circle"> Habilitar</i>
             </button>
-            <button class="deshabilitar" onclick="cambiarEstadoCategoria(${categoria.id}, false)">
+            <button class="deshabilitar" onclick="cambiarEstadoCategoria(${categoria.id}, false, this)">
                 <i class="fas fa-times-circle"> Deshabilitar</i>
             </button>
         </td>
@@ -104,3 +111,50 @@ function agregarCategoriaATabla(categoria) {
 
     tbody.appendChild(row);
 }
+
+// Función para cambiar el estado de una categoría (habilitar/deshabilitar)
+function cambiarEstadoCategoria(id, habilitar, button) {
+    fetch(`http://localhost:8080/categorias/${id}/estado`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ estado: habilitar })
+    })
+        .then(response => {
+            if (!response.ok) throw new Error("Error al cambiar el estado de la categoría");
+            const row = button.closest('tr');
+            const estadoCell = row.querySelectorAll("td")[2];
+            estadoCell.textContent = habilitar ? "Activo" : "Inactivo";
+
+            // Actualizar los botones según el nuevo estado
+            button.parentNode.querySelectorAll('button').forEach(btn => btn.style.display = 'none');
+            button.style.display = 'inline-block';
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Ocurrió un error al cambiar el estado de la categoría.");
+        });
+}
+
+// Función para editar una categoría
+function editarCategoria(id) {
+    // Lógica para abrir el modal de edición y cargar los datos de la categoría
+    const categoryRow = document.querySelector(`#category-${id}`);
+    const categoryName = categoryRow.querySelector(".category-name").textContent;
+    const categoryDesc = categoryRow.querySelector(".category-desc").textContent;
+
+    // Aquí deberías abrir el modal y cargar los valores en los campos
+    document.getElementById("editCategoryName").value = categoryName;
+    document.getElementById("editCategoryDesc").value = categoryDesc;
+    document.getElementById("editCategoryModal").style.display = "block";
+}
+
+// Función para cerrar el modal de edición
+document.getElementById("closeEditModalButton").addEventListener("click", () => {
+    document.getElementById("editCategoryModal").style.display = "none";
+//Salir
+    document.getElementById("closeModalButton").addEventListener("click", () => {
+        document.getElementById("categoryModal").style.display = "none";
+    });
+});

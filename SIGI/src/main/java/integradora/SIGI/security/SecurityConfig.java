@@ -22,7 +22,7 @@ public class SecurityConfig {
         http.csrf().disable()  // Esta es la forma válida actualmente, pero es posible que se cambie en futuras versiones
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth" , "/usuario").permitAll() // Endpoints públicos
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
