@@ -67,7 +67,7 @@
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar..." />
             <button class="search-button"><i class="fas fa-search"></i></button>
-            <button class="filter-button">TODOS</button>
+
             <button class="plus-button"  id="addProduct"><i class="fas fa-plus"></i> Agregar</button>
     <!-- Modal -->
     <div class="modal">
@@ -75,13 +75,18 @@
             <div class="modal-header">
                 <h2>REGISTRO DE PROVEEDOR</h2>
             </div>
+            <br>
             <div class="modal-body">
                
                 <form>
+                    <div class="form-group">
                     <input type="text" name="nombre" placeholder="Nombre del producto" required>
-                    <br>
+                </div>
+                <br>
+                <div class="form-group">
                     <input type="text" name="descripcion" placeholder="Descripcion del producto" required>
-                    <br>
+                </div>
+                
                 </form>
            
             </div>
@@ -107,7 +112,7 @@
                     <tr>
                         <td>Jabón</td>
                         <td>Producto de limpieza</td>
-                        <td><button class="action-button"><i class="fas fa-edit"></i></button> 
+                        <td><a href="EditCategory.html" class="action-button"><i class="fas fa-edit"></i></a> 
                             <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
                             <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>
                             
