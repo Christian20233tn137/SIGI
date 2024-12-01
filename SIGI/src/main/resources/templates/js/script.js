@@ -61,7 +61,7 @@ function registrarCategoria() {
     };
 
     // Realiza la solicitud POST al backend
-    fetch("/categorias", {
+    fetch("/http://localhost:8080categorias", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
