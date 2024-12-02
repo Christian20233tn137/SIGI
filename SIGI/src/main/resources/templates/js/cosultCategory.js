@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     
         // Enviar los datos al servidor con fetch (POST)
-        fetch('http://localhost:8080/categorias', {
+        fetch(API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

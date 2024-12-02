@@ -18,7 +18,7 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<Object> obtenerCategorias() {
         return categoriaService.obtenerCategorias();
     }
