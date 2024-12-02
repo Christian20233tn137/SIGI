@@ -69,7 +69,7 @@
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar..." />
             <button class="search-button"><i class="fas fa-search"></i></button>
-            <button class="plus-button"  id="addProduct"><i class="fas fa-plus"></i> Agregar</button>
+            <button class="plus-button"  id="registerProductButton"><i class="fas fa-plus"></i> Agregar</button>
     <!-- Modal -->
     <div class="modal">
         <div class="modal-content">
@@ -90,11 +90,17 @@
                     </div>
                     
                     <div class="form-group">
-                        <input type="text" id="categoria" name="categoria" placeholder="Ingresa la categoría" required>
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Cargando categorías...</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
-                        <input type="text" id="proveedor" name="proveedor" placeholder="Ingresa el proveedor" required>
+                        <label for="proveedor">Proveedor</label>
+                        <select id="proveedor" name="proveedor" required>
+                            <option value="">Cargando proveedores...</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
@@ -113,7 +119,7 @@
         </div>
         <!-- Table -->
         <main class="content">
-            <table class="provider-table" id="productos-table">
+            <table class="productos-table" id="productos-table">
                 <thead>
                     <tr>
                         <th>NOMBRE</th>
@@ -126,7 +132,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
+                    <!-- Contenido dinámico -->
                 </tbody>
             </table>
         </main>

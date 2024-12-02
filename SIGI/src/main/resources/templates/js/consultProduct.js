@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // URL base de la API
-    const API_URL = 'http://localhost:8080/producto'; // Cambia esto por la URL real de tu API
-    
+    const API_URL = 'http://localhost:8080/producto';
+
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {
         fetch(API_URL)
@@ -10,9 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.type === "SUCCESS") {
                     const tableBody = document.querySelector('#productos-table tbody');
                     tableBody.innerHTML = ''; // Limpiar la tabla antes de llenarla
-                    data.result.forEach((producto, index) => {
+                    data.result.forEach(producto => {
                         const row = document.createElement('tr');
-
 
                         // Columna Nombre
                         const nameCell = document.createElement('td');
@@ -85,24 +84,24 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('productCategory').value = categoria;
         document.getElementById('productPrice').value = precio;
         // Abrir el modal
-        document.getElementById('productModal').style.display = 'block';
+        document.querySelector('.modal').style.display = 'block';
     }
 
     // Función para cerrar el modal
-    function closeEditModal() {
-        document.getElementById('productModal').style.display = 'none';
-    }
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelector('.modal').style.display = 'none';
+        });
+    });
 
     // Función para actualizar el estado del producto (Activar/Desactivar)
     function toggleProductStatus(id, row, estadoCell, toggleButton) {
-        const newStatus = toggleButton.textContent === 'Activar' ? true : false;
-        const updatedProduct = { estado: newStatus };
+        const newStatus = toggleButton.textContent === 'Activar';
+        const updatedProduct = { id, estado: newStatus };
 
-        fetch(`${API_URL}/${id}`, {
+        fetch(`${API_URL}/estado`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedProduct)
         })
         .then(response => response.json())
@@ -122,50 +121,37 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Registrar un nuevo producto
-    document.getElementById("addProductButton").addEventListener("click", () => {
-        document.getElementById("productModal").style.display = "block";
+    document.querySelector('.plus-button').addEventListener('click', () => {
+        document.querySelector('.modal').style.display = 'block';
     });
 
-    // Salir
-    document.getElementById("closeModalButton").addEventListener("click", () => {
-        document.getElementById("productModal").style.display = "none";
-    });
-
-    // Cancelar
-    document.getElementById("cancelButton").addEventListener("click", () => {
-        document.getElementById("productModal").style.display = "none";
-    });
-
-    // Registrar un nuevo producto
-    document.getElementById("registerProductButton").addEventListener("click", function (event) {
+    document.getElementById('registerProductButton').addEventListener('click', function (event) {
         event.preventDefault();
-    
+
         const productName = document.getElementById('productName').value;
         const productCategory = document.getElementById('productCategory').value;
         const productPrice = document.getElementById('productPrice').value;
-    
+
         if (!productName || !productCategory || !productPrice) {
             alert('Por favor, complete todos los campos.');
             return;
         }
-    
+
         const productData = {
             nombre: productName,
             categoria: productCategory,
             precioUnitario: productPrice
         };
-    
+
         fetch(API_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productData)
         })
         .then(response => response.json())
         .then(data => {
             alert('Producto registrado exitosamente');
-            document.getElementById('productModal').style.display = 'none';
+            document.querySelector('.modal').style.display = 'none';
             document.getElementById('productName').value = '';
             document.getElementById('productCategory').value = '';
             document.getElementById('productPrice').value = '';
