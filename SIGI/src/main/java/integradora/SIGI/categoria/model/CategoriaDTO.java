@@ -16,6 +16,9 @@ public class CategoriaDTO {
     @Size(max = 50, message = "La descripción no puede tener más de 50 caracteres")
     private String description;
 
+    @NotNull(groups = ChangeStatus.class, message = "Es necesario especificar el estado")
+    private Boolean status; // Atributo para habilitar/deshabilitar categorías
+
     // Interfaz para validaciones en el registro
     public interface Register {}
 
@@ -23,7 +26,9 @@ public class CategoriaDTO {
     public interface Modify {}
 
     // Interfaz para validaciones al cambiar el estado
-    public interface ChangeStatus {}
+    public interface ChangeStatus {
+
+    }
 
     // Constructores
     public CategoriaDTO() {}
@@ -57,5 +62,13 @@ public class CategoriaDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

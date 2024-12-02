@@ -112,3 +112,5 @@ function agregarCategoriaATabla(categoria) {
     // Añade la nueva fila al cuerpo de la tabla
     tbody.appendChild(row);
 }
+
+

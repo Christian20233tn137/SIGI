@@ -28,6 +28,9 @@ public class UsuarioDTO {
     @NotBlank(groups = {VerifyCode.class})
     private String code;
 
+    @NotNull(groups = ChangeStatus.class, message = "Es necesario especificar el estado")
+    private Boolean status; // Atributo para habilitar/deshabilitar categorías
+
     public UsuarioDTO() {
     }
 
@@ -93,6 +96,14 @@ public class UsuarioDTO {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public interface Register{}
