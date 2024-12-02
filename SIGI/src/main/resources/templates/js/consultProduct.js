@@ -77,24 +77,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Función para abrir el modal de edición
-    function openEditModal(id, nombre, precio, categoria, proveedor, cantidad) {
+    function openEditModal(id, nombre, categoria, precio) {
         // Asignar los valores actuales a los campos del formulario de edición
         document.getElementById('productId').value = id;
         document.getElementById('productName').value = nombre;
-        document.getElementById('precioUnitario').value = precio;
-        document.getElementById('categoria').value = categoria;
-        document.getElementById('proveedor').value = proveedor;
-        document.getElementById('cantidad').value = cantidad;
-        // Abrir el modal
-        document.querySelector('.modal').style.display = 'block';
+        document.getElementById('productCategory').value = categoria;
+        document.getElementById('productPrice').value = precio;
+        showModal(); // Mostrar el modal
     }
 
-    // Función para cerrar el modal
-    document.querySelectorAll('.close-modal').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelector('.modal').style.display = 'none';
-        });
-    });
+    // Mostrar el modal y el fondo
+    function showModal() {
+        document.querySelector('.modal').style.display = 'block';
+  }
+
+    // Ocultar el modal y el fondo
+    function closeModal() {
+        document.querySelector('.modal').style.display = 'none';
+    }
 
     // Función para actualizar el estado del producto (Activar/Desactivar)
     function toggleProductStatus(id, row, estadoCell, toggleButton) {
@@ -123,13 +123,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Registrar un nuevo producto
-    document.querySelector('.plus-button').addEventListener('click', () => {
-        document.querySelector('.modal').style.display = 'block';
+    document.querySelector('.plus-button').addEventListener('click', showModal);
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', closeModal);
     });
-
     document.getElementById('registerProductButton').addEventListener('click', function (event) {
         event.preventDefault();
-<<<<<<< HEAD
 
         const productName = document.getElementById('productName').value;
         const productCategory = document.getElementById('productCategory').value;
@@ -140,72 +139,31 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-=======
-    
-        // Obtener valores del formulario
-        const productId = document.getElementById('productId').value.trim();
-        const productName = document.getElementById('productName').value.trim();
-        const productPrice = document.getElementById('precioUnitario').value.trim();
-        const productCategory = document.getElementById('categoria').value.trim();
-        const productProveedor = document.getElementById('proveedor').value.trim();
-        const productCantidad = document.getElementById('cantidad').value.trim();
-    
-        // Validación de campos obligatorios
-        if (!productName || !productPrice || !productCategory || !productProveedor || !productCantidad) {
-            alert('Por favor, complete todos los campos obligatorios.');
-            return;
-        }
-    
-        // Crear objeto de datos del producto
->>>>>>> 8b95ad3b080852b72ff2d54a479697c77d819f33
         const productData = {
-            id: productId || null, // Asume `null` si no está disponible
             nombre: productName,
-            precioUnitario: parseFloat(productPrice), // Asegurarse de que el precio sea numérico
             categoria: productCategory,
-            proveedor: productProveedor,
-            cantidad: parseInt(productCantidad, 10) // Convertir la cantidad a entero
+            precioUnitario: productPrice
         };
-<<<<<<< HEAD
 
-=======
-    
-        // Llamada al backend para registrar el producto
->>>>>>> 8b95ad3b080852b72ff2d54a479697c77d819f33
         fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productData)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error en la solicitud: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             alert('Producto registrado exitosamente');
-<<<<<<< HEAD
-            document.querySelector('.modal').style.display = 'none';
-=======
-            // Limpiar el formulario
-            document.getElementById('productId').value = '';
->>>>>>> 8b95ad3b080852b72ff2d54a479697c77d819f33
+            closeModal(); // Cerrar el modal
             document.getElementById('productName').value = '';
-            document.getElementById('precioUnitario').value = '';
-            document.getElementById('categoria').value = '';
-            document.getElementById('proveedor').value = '';
-            document.getElementById('cantidad').value = '';
-            // Cerrar el modal y actualizar la tabla
-            document.getElementById('productModal').style.display = 'none';
-            loadTable(); // Función para actualizar la tabla de productos
+            document.getElementById('productCategory').value = '';
+            document.getElementById('productPrice').value = '';
+            loadTable(); // Actualizar la tabla después de agregar el producto
         })
         .catch(error => {
             alert('Error al registrar el producto');
             console.error('Error:', error);
         });
     });
-    
 
     // Inicializar la tabla al cargar la página
     loadTable();
