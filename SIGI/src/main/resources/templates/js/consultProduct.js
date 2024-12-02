@@ -78,12 +78,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Función para abrir el modal de edición
-    function openEditModal(id, nombre, categoria, precio) {
+    function openEditModal(id, nombre, precio, categoria, proveedor, cantidad) {
         // Asignar los valores actuales a los campos del formulario de edición
         document.getElementById('productId').value = id;
         document.getElementById('productName').value = nombre;
-        document.getElementById('productCategory').value = categoria;
-        document.getElementById('productPrice').value = precio;
+        document.getElementById('precioUnitario').value = precio;
+        document.getElementById('categoria').value = categoria;
+        document.getElementById('proveedor').value = proveedor;
+        document.getElementById('cantidad').value = cantidad;
         // Abrir el modal
         document.getElementById('productModal').style.display = 'block';
     }
@@ -140,21 +142,31 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("registerProductButton").addEventListener("click", function (event) {
         event.preventDefault();
     
-        const productName = document.getElementById('productName').value;
-        const productCategory = document.getElementById('productCategory').value;
-        const productPrice = document.getElementById('productPrice').value;
+        // Obtener valores del formulario
+        const productId = document.getElementById('productId').value.trim();
+        const productName = document.getElementById('productName').value.trim();
+        const productPrice = document.getElementById('precioUnitario').value.trim();
+        const productCategory = document.getElementById('categoria').value.trim();
+        const productProveedor = document.getElementById('proveedor').value.trim();
+        const productCantidad = document.getElementById('cantidad').value.trim();
     
-        if (!productName || !productCategory || !productPrice) {
-            alert('Por favor, complete todos los campos.');
+        // Validación de campos obligatorios
+        if (!productName || !productPrice || !productCategory || !productProveedor || !productCantidad) {
+            alert('Por favor, complete todos los campos obligatorios.');
             return;
         }
     
+        // Crear objeto de datos del producto
         const productData = {
+            id: productId || null, // Asume `null` si no está disponible
             nombre: productName,
+            precioUnitario: parseFloat(productPrice), // Asegurarse de que el precio sea numérico
             categoria: productCategory,
-            precioUnitario: productPrice
+            proveedor: productProveedor,
+            cantidad: parseInt(productCantidad, 10) // Convertir la cantidad a entero
         };
     
+        // Llamada al backend para registrar el producto
         fetch(API_URL, {
             method: 'POST',
             headers: {
@@ -162,20 +174,31 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(productData)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             alert('Producto registrado exitosamente');
-            document.getElementById('productModal').style.display = 'none';
+            // Limpiar el formulario
+            document.getElementById('productId').value = '';
             document.getElementById('productName').value = '';
-            document.getElementById('productCategory').value = '';
-            document.getElementById('productPrice').value = '';
-            loadTable(); // Actualizar la tabla después de agregar el producto
+            document.getElementById('precioUnitario').value = '';
+            document.getElementById('categoria').value = '';
+            document.getElementById('proveedor').value = '';
+            document.getElementById('cantidad').value = '';
+            // Cerrar el modal y actualizar la tabla
+            document.getElementById('productModal').style.display = 'none';
+            loadTable(); // Función para actualizar la tabla de productos
         })
         .catch(error => {
             alert('Error al registrar el producto');
             console.error('Error:', error);
         });
     });
+    
 
     // Inicializar la tabla al cargar la página
     loadTable();
