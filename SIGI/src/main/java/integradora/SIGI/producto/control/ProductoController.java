@@ -25,7 +25,7 @@ public class ProductoController {
     }
 
     // Consultar productos
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Object> obtenerProductos() {
         return productoService.obtenerProductos();
     }

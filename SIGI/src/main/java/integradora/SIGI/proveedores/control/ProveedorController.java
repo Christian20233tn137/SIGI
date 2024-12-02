@@ -19,7 +19,7 @@ public class ProveedorController {
     }
 
     // Obtener todos los proveedores
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Object> getAllProveedores() {
         return proveedorService.obtenerProveedores();
     }

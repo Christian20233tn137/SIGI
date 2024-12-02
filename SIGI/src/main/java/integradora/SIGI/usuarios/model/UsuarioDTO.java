@@ -22,9 +22,6 @@ public class UsuarioDTO {
     @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
     private String password;
 
-    @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
-    private String rol;
-
     @NotBlank(groups = {VerifyCode.class})
     private String code;
 
@@ -80,14 +77,6 @@ public class UsuarioDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
     }
 
     public String getCode() {

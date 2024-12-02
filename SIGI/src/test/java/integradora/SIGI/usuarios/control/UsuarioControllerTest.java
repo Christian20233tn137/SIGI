@@ -1,5 +1,6 @@
 package integradora.SIGI.usuarios.control;
 
+import integradora.SIGI.usuarios.model.Rol;
 import integradora.SIGI.usuarios.model.Usuario;
 import integradora.SIGI.usuarios.model.UsuarioDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -107,7 +108,7 @@ class UsuarioControllerTest {
     void testConsultaUsuarioPorId() {
         // Preparación de datos para la consulta por ID
         Long idUsuario = 1L;
-        Usuario usuario = new Usuario(1L, "Layla", "Gonzales Leyva", "LaylaLeyva@gmail.com", "9192837465", "SecurityPass123", "Admin", true);
+        Usuario usuario = new Usuario(1L, "Layla", "Gonzales Leyva", "LaylaLeyva@gmail.com", "9192837465", "SecurityPass123", Rol.ROLE_ADMIN, true);
 
         // Simulación del comportamiento del servicio
         when(usuarioService.findById(idUsuario)).thenReturn(Optional.of(usuario));
@@ -155,7 +156,6 @@ class UsuarioControllerTest {
         usuarioNoAdmin.setTelephone("9998887777");
         usuarioNoAdmin.setPassword("NoAdmin123");
         usuarioNoAdmin.setStatus(true);
-        usuarioNoAdmin.setRol("User"); // Rol no administrador
 
         // Configuración de la respuesta esperada
         ResponseEntity<Object> respuestaEsperada = ResponseEntity.status(403).body("Error: Acceso restringido");

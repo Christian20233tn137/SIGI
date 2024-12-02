@@ -1,7 +1,5 @@
 package integradora.SIGI.usuarios.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import integradora.SIGI.Role.model.Role;
 import jakarta.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
@@ -28,8 +26,9 @@ public class Usuario {
     @Column(nullable = false, name="password",columnDefinition = "VARCHAR(255)") // Increased password length
     private String password;
 
-    @Column(name="rol", columnDefinition = "VARCHAR(50)")
-    private String rol;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", columnDefinition = "VARCHAR(50)", nullable = false)
+    private Rol rol;
 
     @Column(name="status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
@@ -41,30 +40,13 @@ public class Usuario {
 
     }
 
-    @ManyToMany(fetch = FetchType.LAZY) // Changed to LAZY for better performance
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
-
     public Usuario(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public Usuario(String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.telephone= telephone;
-        this.password = password;
-        this.rol=rol;
-        this.status=status;
-    }
 
-    public Usuario(Long id, String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
+    public Usuario(Long id, String name, String lastname, String email, String telephone, String password, Rol rol, boolean status) {
         this.id=id;
         this.name = name;
         this.lastname = lastname;
@@ -73,6 +55,16 @@ public class Usuario {
         this.password = password;
         this.rol=rol;
         this.status=status;
+    }
+
+    public Usuario(String name, String lastname, String email, String telephone, String password, Rol rol, boolean status) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.telephone = telephone;
+        this.password = password;
+        this.rol = rol;
+        this.status = status;
     }
 
     public Long getId() {
@@ -123,11 +115,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
@@ -147,11 +139,4 @@ public class Usuario {
         this.code = code;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

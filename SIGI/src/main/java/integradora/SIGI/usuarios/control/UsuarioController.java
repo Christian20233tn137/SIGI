@@ -2,6 +2,7 @@ package integradora.SIGI.usuarios.control;
 
 import integradora.SIGI.usuarios.model.Usuario;
 import integradora.SIGI.usuarios.model.UsuarioDTO;
+import integradora.SIGI.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,12 +22,12 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping
-    public ResponseEntity<Object> getAllUsuarios() {
+    @GetMapping("/all")
+    public ResponseEntity<Message> getAllUsuarios() {
         return usuarioService.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Object> saveUsuarios(@Validated(UsuarioDTO.Register.class) @RequestBody UsuarioDTO dto) {
         return usuarioService.saveUsuarios(dto);
     }

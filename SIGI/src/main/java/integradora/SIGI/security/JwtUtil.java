@@ -5,73 +5,85 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
-
     @Value("${jwt.expiration}")
-    private long expiration;
+    private long jwtExpirationInMs;
 
-    private SecretKey getSigningKey() {
-        // Use a secure random key generation instead of hardcoding secret
-        return Keys.hmacShaKeyFor(secret.getBytes());
+    private final SecretKey secretKey;
+
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String extractEmail(String token) {
-        return extractClaim(token, Claims::getSubject); // Using email as subject
+    public String generateToken(String email, String rol, Long id, boolean status) {
+        return Jwts.builder()
+                .setSubject(email)  // Usamos el correo como el "subject"
+                .claim("role", rol)  // Incluimos el rol
+                .claim("id", id)  // Incluimos el ID del usuario
+                .claim("status", status)  // Incluimos el estado (activo o inactivo)
+                .setIssuedAt(new Date())  // Fecha de emisión
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))  // Expiración
+                .signWith(secretKey)  // Clave secreta para firmar el token
+                .compact();
     }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+
+
+    public boolean validateToken(String token, String username) {
+        final String extractedUsername = extractUsername(token);
+        return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+    public boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractAllClaims(token).getExpiration();
     }
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
     }
 
-    public long getExpirationTime() {
-        return expiration;
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        String role = claims.get("role", String.class);
+        System.out.println(role);
+        System.out.println("Rol extraído del token: " + role); // Línea de depuración
+        return role;
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername()); // Subject is the email
+    public Long extractId(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("id", Long.class);  // Cambiar a Long.class
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject) // Store email as subject
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey())
-                .compact();
+
+    public boolean extractStatus(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("status", Boolean.class);  // Extraemos el estado del usuario
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String email = extractEmail(token); // Changed to email
-        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
+
 }

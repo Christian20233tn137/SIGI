@@ -1,12 +1,13 @@
 package integradora.SIGI.usuarios.control;
 
+import integradora.SIGI.usuarios.model.Rol;
 import integradora.SIGI.usuarios.model.Usuario;
 import integradora.SIGI.usuarios.model.UsuarioDTO;
 import integradora.SIGI.usuarios.model.UsuarioRepository;
 import integradora.SIGI.utils.EmailSender;
 import integradora.SIGI.utils.Message;
 import integradora.SIGI.utils.TypesResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,14 @@ public class UsuarioService {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+
     private final EmailSender emailSender;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, EmailSender emailSender) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailSender emailSender) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
         this.emailSender = emailSender;
     }
 
@@ -41,10 +45,11 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<Object> findAll() {
+    public ResponseEntity<Message> findAll() {
+        logger.info("Iniciando búsqueda de todos los usuarios.");
         List<Usuario> usuarios = usuarioRepository.findAll();
-        logger.info("La búsqueda ha sido realizada correctamente");
-        return new ResponseEntity<>(new Message(usuarios,"Listado de Usuarios", TypesResponse.SUCCESS), HttpStatus.OK);
+        logger.info("Se encontraron {} usuarios.", usuarios.size());
+        return new ResponseEntity<>(new Message(usuarios, "Listado de usuarios", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -71,7 +76,9 @@ public class UsuarioService {
             return new ResponseEntity<>(new Message("La contraseña del Usuario no puede tener menos de 8 caracteres", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
         }
 
-        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), dto.getPassword(), dto.getRol(), true);
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+
+        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_ADMIN, true);
         usuarioRepository.save(usuario);
         return new ResponseEntity<>(new Message(usuario, "Usuario registrado exitosamente", TypesResponse.SUCCESS), HttpStatus.CREATED);
     }
@@ -111,7 +118,6 @@ public class UsuarioService {
         usuario.setEmail(dto.getEmail());
         usuario.setTelephone(dto.getTelephone());
         usuario.setPassword(dto.getPassword());
-        usuario.setRol(dto.getRol());
         usuarioRepository.save(usuario);
 
         return new ResponseEntity<>(new Message(usuario, "Usuario actualizado exitosamente", TypesResponse.SUCCESS), HttpStatus.OK);

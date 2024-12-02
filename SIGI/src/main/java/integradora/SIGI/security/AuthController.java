@@ -1,52 +1,52 @@
 package integradora.SIGI.security;
 
-import integradora.SIGI.security.dto.AuthRequest;
-import integradora.SIGI.security.dto.AuthResponse;
 import integradora.SIGI.usuarios.model.Usuario;
 import integradora.SIGI.usuarios.model.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-
-    private final UserDetailsServiceImpl userDetailsService;
-
-    private final JwtUtil jwtUtil;
-
-    private final UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil, UsuarioRepository usuarioRepository) {
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-        this.usuarioRepository = usuarioRepository;
-    }
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest authRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
-        } catch (BadCredentialsException e) {
-            throw new Exception("Email o contraseña incorrectos", e);
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(loginRequest.getEmail());
+
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+
+            // Verifica la contraseña
+            if (passwordEncoder.matches(loginRequest.getPassword(), usuario.getPassword())) {
+                // Generar el token incluyendo el id y el status
+                String token = jwtUtil.generateToken(
+                        usuario.getEmail(),
+                        usuario.getRol().name(),
+                        usuario.getId(),  // El ID del usuario
+                        usuario.isStatus()  // El estado del usuario
+                );
+                return ResponseEntity.ok(token);
+            } else {
+                return ResponseEntity.status(401).body("Credenciales inválidas: Contraseña incorrecta");
+            }
+        } else {
+            return ResponseEntity.status(401).body("Credenciales inválidas: Usuario no encontrado");
         }
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        Usuario usuario = usuarioRepository.findByEmail(authRequest.getEmail())
-                .orElseThrow(() -> new Exception("Usuario no encontrado por email"));
-
-        long expirationTime = jwtUtil.getExpirationTime();
-
-        return new AuthResponse(jwt, usuario.getId(), usuario.getEmail(), expirationTime);
     }
+
+
+
 }
