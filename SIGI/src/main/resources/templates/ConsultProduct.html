@@ -59,6 +59,8 @@
        </div>
    </div>
    <br>
+
+
    <div class="form-container">
        <div class="form-header">
            <h2>CONSULTAR PRODUCTOS</h2>
@@ -67,38 +69,49 @@
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar..." />
             <button class="search-button"><i class="fas fa-search"></i></button>
-            <button class="plus-button"  id="addProduct"><i class="fas fa-plus"></i> Agregar</button>
+            <button class="plus-button"  id="registerProductButton"><i class="fas fa-plus"></i> Agregar</button>
     <!-- Modal -->
     <div class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>REGISTRO DE PRODUCTO</h2>
+                <button class="close-modal">X</button>
             </div>
             <div class="modal-body">
-               
-                <form>
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+            
                     <div class="form-group">
-                    <input type="text" name="nombre" placeholder="Ingresa el nombre" required>
+                        <input type="text" id="productName" name="nombre" placeholder="Ingresa el nombre" required>
                     </div>
-                    <div class="form-group">
-                    <input type="number" name="precio unitario" placeholder="Ingresa precio unitario" required>
-                    </div>
-                    <div class="form-group">
-                    <input type="text" name="categoria" placeholder="Ingresa la categoria" required>
                     
-                    </div>
                     <div class="form-group">
-                    <input type="text" name="proveedor" placeholder="Ingresa el proveedor" required>
-                   </div>
-                   <div class="form-group">
-                    <input type="number" name="cantidad" placeholder="Ingresa la cantidad">
+                        <input type="number" id="precioUnitario" name="precio_unitario" placeholder="Ingresa precio unitario" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Cargando categorías...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="proveedor">Proveedor</label>
+                        <select id="proveedor" name="proveedor" required>
+                            <option value="">Cargando proveedores...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Ingresa la cantidad">
                     </div>
                 </form>
-           
             </div>
+            
             <div class="modal-footer">
-                <button class="close-modal">Cerrar</button>
-                <button class="registrar">Registrar</button>
+                <button class="close-modal" id="cerrarButton">Cerrar</button>
+                <button class="registrar" id="registerProductButton">Registrar</button>
             </div>
         </div>
     </div>
@@ -106,7 +119,7 @@
         </div>
         <!-- Table -->
         <main class="content">
-            <table class="provider-table">
+            <table class="productos-table" id="productos-table">
                 <thead>
                     <tr>
                         <th>NOMBRE</th>
@@ -119,37 +132,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Proveedor 1</td>
-                        <td>RFC123456</td>
-                        <td>Calle Ejemplo 123</td>
-                        <td>123-456-7890</td>
-                        <td>proveedor1@correo.com</td>
-                        <td></td>
-                       
-                        <td><a href="EditProduct.html" class="action-button"><i class="fas fa-edit"></i></a> 
-                            <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
-                            <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Proveedor 2</td>
-                        <td>RFC654321</td>
-                        <td>Calle Ejemplo 456</td>
-                        <td>098-765-4321</td>
-                        <td>proveedor2@correo.com</td>
-                        <td>  </td>
-                        <td><button class="action-button"><i class="fas fa-edit"></i></button>
-                            <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
-                            <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>
-                            
-                        </td>
-
-                    </tr>
-                    <tr>
-                       
-                    </tr>
+                    <!-- Contenido dinámico -->
                 </tbody>
             </table>
         </main>
@@ -158,6 +141,7 @@
            <br> 
        </form>
    </div>
-   <script src="js/script.js"></script>
+   
+   <script src="js/consultProduct.js"></script>
 </body>
 </html>

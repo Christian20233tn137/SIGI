@@ -28,10 +28,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+<<<<<<< HEAD
                         .requestMatchers("/login").permitAll() // Permitir acceso a login y registro
                         .requestMatchers("/categorias").hasAuthority("ROLE_TOWN_ACCESS") // Roles específicos
                         .requestMatchers("/usuario").hasAuthority("ROLE_STATE_ACCESS")
                         .anyRequest().authenticated() // Requiere autenticación para el resto
+=======
+                        .requestMatchers("/auth" , "/usuario").permitAll() // Endpoints públicos
+                        .anyRequest().permitAll()
+>>>>>>> chris
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin sesiones
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Agregar el filtro JWT
