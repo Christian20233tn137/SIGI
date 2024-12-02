@@ -1,8 +1,11 @@
-package integradora.SIGI.security;
+package integradora.SIGI.security.dto;
 
 public class AuthRequest {
     private String email;
     private String password;
+
+    public AuthRequest() {
+    }
 
     public String getEmail() {
         return email;

@@ -6,6 +6,7 @@ import integradora.SIGI.usuarios.model.UsuarioRepository;
 import integradora.SIGI.utils.EmailSender;
 import integradora.SIGI.utils.Message;
 import integradora.SIGI.utils.TypesResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class UsuarioService {
     public ResponseEntity<Object> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         logger.info("La búsqueda ha sido realizada correctamente");
-        return new ResponseEntity<>(new Message(usuarios,"Listado de etiquetas", TypesResponse.SUCCESS), HttpStatus.OK);
+        return new ResponseEntity<>(new Message(usuarios,"Listado de Usuarios", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
     @Transactional(rollbackFor = {SQLException.class})

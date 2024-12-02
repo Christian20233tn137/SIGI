@@ -1,6 +1,10 @@
 package integradora.SIGI.usuarios.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import integradora.SIGI.Role.model.Role;
 import jakarta.persistence.*;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name="usuarios")
@@ -8,17 +12,20 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
     @Column (name="name",columnDefinition="VARCHAR(30)")
     private String name;
 
     @Column(name="lastname",columnDefinition = "VARCHAR(30)")
     private String lastname;
-    @Column(name="email",columnDefinition = "VARCHAR(30)")
+
+    @Column(nullable = false, unique = true, name="email",columnDefinition = "VARCHAR(30)")
     private String email;
 
     @Column(name="telephone",columnDefinition = "VARCHAR(10)")
     private String telephone;
-    @Column(name="password",columnDefinition = "VARCHAR(16)")
+
+    @Column(nullable = false, name="password",columnDefinition = "VARCHAR(255)") // Increased password length
     private String password;
 
     @Column(name="rol", columnDefinition = "VARCHAR(50)")
@@ -29,8 +36,22 @@ public class Usuario {
 
     @Column(name = "code", columnDefinition = "VARCHAR(10)")
     private String code;
+
     public Usuario(){
 
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY) // Changed to LAZY for better performance
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    public Usuario(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public Usuario(String name, String lastname, String email, String telephone, String password, String rol, boolean status) {
@@ -124,5 +145,13 @@ public class Usuario {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

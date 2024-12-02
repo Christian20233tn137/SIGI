@@ -1,32 +1,40 @@
 package integradora.SIGI.security;
 
-import integradora.SIGI.usuarios.control.UsuarioDetailsService;
+import integradora.SIGI.security.JwtRequestFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()  // Esta es la forma válida actualmente, pero es posible que se cambie en futuras versiones
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth" , "/usuario").permitAll() // Endpoints públicos
-                        .anyRequest().authenticated()
+                        .requestMatchers("/login").permitAll() // Permitir acceso a login y registro
+                        .requestMatchers("/categorias").hasAuthority("ROLE_TOWN_ACCESS") // Roles específicos
+                        .requestMatchers("/usuario").hasAuthority("ROLE_STATE_ACCESS")
+                        .anyRequest().authenticated() // Requiere autenticación para el resto
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin sesiones
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Agregar el filtro JWT
 
         return http.build();
     }
@@ -38,13 +46,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Codificador de contraseñas
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UsuarioDetailsService(); // Implementación personalizada de UserDetailsService
+        return new BCryptPasswordEncoder();
     }
 }
-
-
