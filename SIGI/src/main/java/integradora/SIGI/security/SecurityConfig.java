@@ -28,6 +28,34 @@ public class SecurityConfig {
     }
 
     @Bean
+<<<<<<< HEAD
+=======
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+<<<<<<< HEAD
+                        .requestMatchers("/login").permitAll() // Permitir acceso a login y registro
+                        .requestMatchers("/categorias").hasAuthority("ROLE_TOWN_ACCESS") // Roles específicos
+                        .requestMatchers("/usuario").hasAuthority("ROLE_STATE_ACCESS")
+                        .anyRequest().authenticated() // Requiere autenticación para el resto
+=======
+                        .requestMatchers("/auth" , "/usuario").permitAll() // Endpoints públicos
+                        .anyRequest().permitAll()
+>>>>>>> chris
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin sesiones
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Agregar el filtro JWT
+
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+>>>>>>> 23fbd5fcaebf3dc974710f04662f0bfdc129be81
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

@@ -59,6 +59,7 @@
        </div>
    </div>
    <br>
+
    <div class="form-container">
        <div class="form-header">
            <h2>CONSULTAR USUARIOS</h2>
@@ -77,15 +78,24 @@
             <div class="modal-body">
                
                 <form>
-                    <input type="text" name="nombre" placeholder="Ingresa el nombre" required>
-                    <br>
-                    <input type="text" name="apellidos" placeholder="Ingresa tus apellidos" required>
-                    <br>
-                    <input type="text" name="telefono" placeholder="Ingresa tu telefono" required>
-                    <br>
-                    <input type="email" name="correo" placeholder="Ingresa tu correo electrónico" required>
-                    <input type="password" name="contraseña" placeholder="Contraseña temporal" required>
-                    <input type="password" name="ConfirmarContraseña" placeholder="Confirmar contraseña" required>
+                    <div class="form-group">
+                        <input type="text" name="nombre" placeholder="Ingresa el nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="apellidos" placeholder="Ingresa tus apellidos" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="telefono" placeholder="Ingresa tu telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="correo" placeholder="Ingresa tu correo electrónico" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="contraseña" placeholder="Contraseña temporal" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="ConfirmarContraseña" placeholder="Confirmar contraseña" required>
+                    </div>
                 </form>  
            
             </div>
@@ -110,33 +120,9 @@
                         <th>GESTIONAR</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Proveedor 1</td>
-                        <td>RFC123456</td>
-                        <td>Calle Ejemplo 123</td>
-                        <td>123-456-7890</td>
-                        <td></td>
-                        <td><a href="EditarUsuario.html" class="action-button"><i class="fas fa-edit"></i></a> 
-                            <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
-                            <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Proveedor 2</td>
-                        <td>RFC654321</td>
-                        <td>Calle Ejemplo 456</td>
-                        <td>098-765-4321</td>
-                        <td></td>
-                        <td><a href="EditarUsuario.html" class="action-button"><i class="fas fa-edit"></i></a> 
-                            <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
-                            <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>
-                            
-                        </td>
-
-                    </tr>
-                </tbody>
+               <tbody>
+                 <!-- Contenido dinámico -->
+               </tbody>
             </table>
         </main>
     </div>
@@ -144,6 +130,6 @@
            <br> 
        </form>
    </div>
-   <script src="js/script.js"></script>
+   <script src="js/Usuario.js"></script>
 </body>
 </html>
