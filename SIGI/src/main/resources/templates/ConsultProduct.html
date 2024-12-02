@@ -67,7 +67,6 @@
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar..." />
             <button class="search-button"><i class="fas fa-search"></i></button>
-            <button class="filter-button">TODOS</button>
             <button class="plus-button"  id="addProduct"><i class="fas fa-plus"></i> Agregar</button>
     <!-- Modal -->
     <div class="modal">
@@ -78,14 +77,22 @@
             <div class="modal-body">
                
                 <form>
+                    <div class="form-group">
                     <input type="text" name="nombre" placeholder="Ingresa el nombre" required>
-                    <br>
+                    </div>
+                    <div class="form-group">
                     <input type="number" name="precio unitario" placeholder="Ingresa precio unitario" required>
-                    <br>
+                    </div>
+                    <div class="form-group">
                     <input type="text" name="categoria" placeholder="Ingresa la categoria" required>
-                    <br>
+                    
+                    </div>
+                    <div class="form-group">
                     <input type="text" name="proveedor" placeholder="Ingresa el proveedor" required>
+                   </div>
+                   <div class="form-group">
                     <input type="number" name="cantidad" placeholder="Ingresa la cantidad">
+                    </div>
                 </form>
            
             </div>
@@ -107,6 +114,7 @@
                         <th>CATEGORIA</th>
                         <th>PRECIO UNITARIO</th>
                         <th>PROVEEDOR</th>
+                        <th>ESTADO</th>
                         <th>GESTIONAR</th>
                     </tr>
                 </thead>
@@ -117,8 +125,9 @@
                         <td>Calle Ejemplo 123</td>
                         <td>123-456-7890</td>
                         <td>proveedor1@correo.com</td>
+                        <td></td>
                        
-                        <td><button class="action-button"><i class="fas fa-edit"></i></button> 
+                        <td><a href="EditProduct.html" class="action-button"><i class="fas fa-edit"></i></a> 
                             <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
                             <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>
                             
@@ -130,7 +139,7 @@
                         <td>Calle Ejemplo 456</td>
                         <td>098-765-4321</td>
                         <td>proveedor2@correo.com</td>
-                      
+                        <td>  </td>
                         <td><button class="action-button"><i class="fas fa-edit"></i></button>
                             <button class="habilitar"><i class="fas fa-check-circle">  Habilitar</i></button>
                             <button class="deshabilitar"><i class="fas fa-times-circle">Deshabilitar</i></button>

@@ -1,8 +1,12 @@
-body {
-    font-family: Arial, sans-serif;
+body, html {
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh; /* Asegura que el fondo ocupe la altura completa */
 }
 
 .background{
@@ -29,6 +33,9 @@ body {
     top: 0px;
     z-index: 999;
 }
+
+
+
 
 .sidebar:hover {
     width: 250px; /* Sidebar expandida */
@@ -63,6 +70,7 @@ body {
     margin: 0;
     width: 100%;
     color: white;
+    text-decoration: none;
 }
 
 .menu-item {
@@ -137,8 +145,6 @@ body {
         width: 180px;
     }
 }
-
-
 
 
 

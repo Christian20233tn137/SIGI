@@ -8,32 +8,76 @@
     <link rel="stylesheet" href="css/EditCategory.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="menu-icon">
-                <i class="fas fa-bars"></i>
-            </div>
-            <h1>EDITAR CATEGORÍA</h1>
-            <div class="user-icon">
-                <i class="fas fa-user-circle"></i>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="content">
-            <form class="form">
-                <div class="form-group">
-                    <label for="nombre">NOMBRE*</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="descripcion">DESCRIPCIÓN*</label>
-                    <input type="text" id="descripcion" name="descripcion" required>
-                </div>
-                <button type="submit" class="submit-button">ACTUALIZAR</button>
-            </form>
-        </main>
+    <img src="img/fondo1.png" alt="Fondo" class="background">
+    <!-- Barra lateral -->
+   <div class="sidebar">
+       <ul class="menu">
+           <a class="menu" href="Menu.html">
+              <li  class="menu-item">
+                  <i class="icon fa fa-home"></i>
+                  <span>Menu principal</span>
+              </li>
+           </a>
+           <a class="menu" href="ConsultCategory.html">
+              <li class="menu-item">
+                  <i class="icon fas fa-th-large"></i>
+                  <span>Categorías</span>
+              </li>
+           </a> 
+           <a class="menu" href="ConsultProduct.html">
+              <li class="menu-item">
+                  <i class="icon fas fa-box"></i>
+                  <span>Productos</span>
+              </li>
+           </a>
+           <a class="menu" href="ConsultProvide.html">  
+              <li class="menu-item">
+                  <i class="icon fas fa-truck"></i>
+                  <span>Proveedores</span>
+              </li>
+           </a>
+           <a class="menu" href="ConsultarUsuarios.html">  
+              <li class="menu-item">
+                  <i class="icon fas fa-users"></i>
+                  <span>Usuarios</span>
+              </li>
+           </a>  
+           <a href="login.html" class="menu">
+              <li class="menu-item">
+                  <i class=" icon fas fa-sign-out-alt"></i>
+                  <span>Salir</span>
+              </li>
+           </a>
+      </ul>
+      <div class="profile">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
+          <div>
+              <p>Nombre del usuario</p>
+              <small>Cuenta Free</small>
+          </div>
+      </div>
+  </div>
+  <br>
+  <div class="form-container">
+    <header class="form-header">
+        EDITAR CATEGORIA
+    </header>
+    <form class="registration-form">
+        <div class="form-row">
+        <div class="form-group">
+            <label for="nombres" >NOMBRE*</label>
+            <input placeholder="Ingresa nombre" type="text" id="nombres" name="nombres" required>
+        </div>
+        <div class="form-group">
+            <label for="categoría">DESCRIPCION*</label>
+            <input placeholder="Ingresa descripción"  type="text" id="apellidos" name="apellidos" required>
+        </div>
     </div>
+ 
+    <div class="form-footer">
+        <button type="submit">ACTUALIZAR</button>
+    </div>
+    </form>
+</div>
 </body>
 </html>
