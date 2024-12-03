@@ -1,6 +1,7 @@
 package integradora.SIGI.categoria.control;
 
 import integradora.SIGI.categoria.model.CategoriaDTO;
+import integradora.SIGI.usuarios.model.UsuarioDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -131,6 +132,24 @@ class CategoriaControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
         assertEquals("Listado completo de todas las categorías", respuesta.getBody()); // Mensaje esperado
     }
+/*
+    @Test
+    void testConsultaCategoriasPorNombre() {
+        // Datos de prueba
+        String filtroNombre = "Electrónica";
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de categorías con nombre 'Electrónica'");
+
+        // Simulación del comportamiento del servicio
+        when(categoriaService.categoriaExiste(filtroNombre)).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = categoriaController.categoriaExiste(filtroNombre);
+
+        // Validación de los resultados
+        assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
+        assertEquals("Listado de categorías con nombre 'Electrónica'", respuesta.getBody()); // Mensaje esperado
+    }
+ */
 
     @Test
     void testConsultaExitosaDeCategoriasActivas() {
@@ -147,6 +166,27 @@ class CategoriaControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
         assertEquals("Listado de categorías activas", respuesta.getBody()); // Mensaje esperado
     }
+/*
+    @Test
+    void testRestriccionDeAccesoCategoriasActivasSinRolAdmin() {
+        // Configuración de datos de prueba
+        UsuarioDTO usuarioNoAdmin = new UsuarioDTO();
+        usuarioNoAdmin.setRol("User"); // Rol no administrador
+
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.status(403).body("Error: Acceso restringido");
+
+        // Simulación del comportamiento del servicio
+        when(categoriaService.obtenerCategoriasActivas()).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = categoriaController.obtenerCategoriasActivas();
+
+        // Validación de los resultados
+        assertEquals(403, respuesta.getStatusCodeValue()); // Código HTTP 403 esperado
+        assertEquals("Error: Acceso restringido", respuesta.getBody()); // Mensaje esperado
+    }
+
+ */
 
     @Test
     void testMensajeDeAlertaSinCategoriasActivas() {
@@ -163,7 +203,6 @@ class CategoriaControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
         assertEquals("No hay categorías activas disponibles", respuesta.getBody()); // Mensaje esperado
     }
-
 
     @Test
     void testActualizacionExitosaDeCategoria() {
@@ -187,6 +226,29 @@ class CategoriaControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
         assertEquals("Categoría actualizada correctamente", respuesta.getBody()); // Mensaje esperado
     }
+
+    @Test
+    void testErrorAlActualizarCategoriaSinNombreODescripcion() {
+        // Preparación de datos de prueba con el campo "Nombre" vacío
+        CategoriaDTO categoriaIncompleta = new CategoriaDTO();
+        categoriaIncompleta.setId(1L);
+        categoriaIncompleta.setName(null); // Nombre vacío
+        categoriaIncompleta.setDescription("Descripción válida");
+
+        // Configuración de la respuesta esperada
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.badRequest().body("Error: Los campos obligatorios deben completarse");
+
+        // Simulación del comportamiento del servicio
+        when(categoriaService.actualizarCategoria(any(CategoriaDTO.class))).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = categoriaController.actualizarCategoria(categoriaIncompleta);
+
+        // Validación de los resultados
+        assertEquals(400, respuesta.getStatusCodeValue()); // Código HTTP 400 esperado
+        assertEquals("Error: Los campos obligatorios deben completarse", respuesta.getBody()); // Mensaje esperado
+    }
+
 
     @Test
     void testCambioEstadoADeshabilitada() {

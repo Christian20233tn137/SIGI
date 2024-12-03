@@ -1,6 +1,7 @@
 package integradora.SIGI.proveedores.control;
 
 import integradora.SIGI.proveedores.model.ProveedorDTO;
+import integradora.SIGI.usuarios.model.UsuarioDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -67,6 +68,7 @@ class ProveedorControllerTest {
         assertEquals(400, respuesta.getStatusCodeValue());
         assertEquals("Error: Todos los campos obligatorios deben completarse", respuesta.getBody());
     }
+
     @Test
     void testConsultaExitosaDeProveedores() {
         ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de todos los proveedores");
@@ -81,6 +83,25 @@ class ProveedorControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Listado de todos los proveedores", respuesta.getBody());
     }
+/*
+    @Test
+    void testConsultaProveedoresPorNombre() {
+        // Datos de prueba
+        String filtroNombre = "Proveedor A";
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de proveedores con nombre 'Proveedor A'");
+
+        // Simulación del comportamiento del servicio
+        when(proveedorService.obtenerProveedoresPorNombre(filtroNombre)).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = proveedorController.obtenerProveedoresPorNombre(filtroNombre);
+
+        // Validación de los resultados
+        assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
+        assertEquals("Listado de proveedores con nombre 'Proveedor A'", respuesta.getBody()); // Mensaje esperado
+    }
+ */
+
     @Test
     void testConsultaProveedoresActivos() {
         ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de proveedores activos");
@@ -95,6 +116,27 @@ class ProveedorControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Listado de proveedores activos", respuesta.getBody());
     }
+    
+/*
+    @Test
+    void testRestriccionDeAccesoProveedoresActivosSinRolAdmin() {
+        // Configuración de datos de prueba
+        UsuarioDTO usuarioNoAdmin = new UsuarioDTO();
+        usuarioNoAdmin.setRol("User"); // Rol no administrador
+
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.status(403).body("Error: Acceso restringido");
+
+        // Simulación del comportamiento del servicio
+        when(proveedorService.obtenerProveedoresActivos()).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = proveedorController.getActiveProveedores();
+
+        // Validación de los resultados
+        assertEquals(403, respuesta.getStatusCodeValue()); // Código HTTP 403 esperado
+        assertEquals("Error: Acceso restringido", respuesta.getBody()); // Mensaje esperado
+    }
+*/
     @Test
     void testMensajeDeAlertaSinProveedoresActivos() {
         // Simulación de un escenario sin proveedores activos

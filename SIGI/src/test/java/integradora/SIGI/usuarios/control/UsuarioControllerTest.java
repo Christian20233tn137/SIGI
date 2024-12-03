@@ -103,6 +103,25 @@ class UsuarioControllerTest {
         assertEquals(400, respuesta.getStatusCodeValue()); // Código HTTP 400 esperado
         assertEquals("Error: Todos los campos obligatorios deben completarse", respuesta.getBody()); // Mensaje esperado
     }
+/*
+    @Test
+    void testConsultaUsuariosPorNombre() {
+        // Datos de prueba
+        String nombreFiltro = "Juan";
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de usuarios con nombre Juan");
+
+        // Simulación del comportamiento del servicio
+        when(usuarioService.findByName(nombreFiltro)).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = usuarioController.getUsuariosByName(nombreFiltro);
+
+        // Validación de los resultados
+        assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
+        assertEquals("Listado de usuarios con nombre Juan", respuesta.getBody()); // Mensaje esperado
+    }
+
+ */
 
     @Test
     void testConsultaUsuarioPorId() {
@@ -120,6 +139,26 @@ class UsuarioControllerTest {
         assertEquals("Layla", respuesta.get().getName()); // Verificar nombre
         assertEquals("Gonzales Leyva", respuesta.get().getLastname()); // Verificar apellido
     }
+/*
+    @Test
+    void testRestriccionDeAccesoConsultaUsuariosSinRolAdmin() {
+        // Configuración de datos de prueba
+        UsuarioDTO usuarioNoAdmin = new UsuarioDTO();
+        usuarioNoAdmin.setRol("User"); // Rol no administrador
+
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.status(403).body("Error: Acceso restringido");
+
+        // Simulación del comportamiento del servicio
+        when(usuarioService.findAll()).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = usuarioController.getAllUsuarios();
+
+        // Validación de los resultados
+        assertEquals(403, respuesta.getStatusCodeValue()); // Código HTTP 403 esperado
+        assertEquals("Error: Acceso restringido", respuesta.getBody()); // Mensaje esperado
+    }
+*/
     @Test
     void testEdicionExitosaDeUsuario() {
         // Datos de prueba para edición exitosa

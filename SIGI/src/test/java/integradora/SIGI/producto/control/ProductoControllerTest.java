@@ -1,6 +1,7 @@
 package integradora.SIGI.producto.control;
 
 import integradora.SIGI.producto.model.ProductoDTO;
+import integradora.SIGI.producto.model.ProductoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -65,6 +66,7 @@ class ProductoControllerTest {
         assertEquals(400, respuesta.getStatusCodeValue());
         assertEquals("Error: Todos los campos obligatorios deben completarse", respuesta.getBody());
     }
+
     @Test
     void testConsultaExitosaDeProductos() {
         ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de todos los productos");
@@ -79,6 +81,7 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Listado de todos los productos", respuesta.getBody());
     }
+
     @Test
     void testConsultaProductosPorNombre() {
         String nombreFiltro = "Laptop";
@@ -94,6 +97,25 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Listado de productos con nombre Laptop", respuesta.getBody());
     }
+/*
+    @Test
+    void testMensajeDeAlertaSinProductosEncontrados() {
+        // Datos de prueba para un filtro que no coincida con ningún producto
+        String filtroNombre = "Producto Inexistente";
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("No se encontraron productos con el filtro proporcionado");
+
+        // Simulación del comportamiento del servicio
+        when(productoService.existsByNombreIgnoreCase(filtroNombre)).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = productoController.existsByNombreIgnoreCase(filtroNombre);
+
+        // Validación de los resultados
+        assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
+        assertEquals("No se encontraron productos con el filtro proporcionado", respuesta.getBody()); // Mensaje esperado
+    }
+ */
+
     @Test
     void testConsultaProductosActivos() {
         ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de productos activos");
@@ -108,6 +130,23 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Listado de productos activos", respuesta.getBody());
     }
+
+    @Test
+    void testMensajeDeAlertaSinProductosActivos() {
+        // Simulación de un escenario sin productos activos
+        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("No hay productos activos disponibles");
+
+        // Simulación del comportamiento del servicio
+        when(productoService.obtenerProductosActivos()).thenReturn(respuestaEsperada);
+
+        // Ejecución del método a probar
+        ResponseEntity<Object> respuesta = productoController.obtenerProductosActivos();
+
+        // Validación de los resultados
+        assertEquals(200, respuesta.getStatusCodeValue()); // Código HTTP 200 esperado
+        assertEquals("No hay productos activos disponibles", respuesta.getBody()); // Mensaje esperado
+    }
+
     @Test
     void testActualizacionExitosaDeProducto() {
         // Datos de prueba
@@ -129,6 +168,7 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Producto actualizado correctamente", respuesta.getBody());
     }
+
     @Test
     void testActualizacionProductoCamposFaltantes() {
         // Datos de prueba
@@ -150,6 +190,7 @@ class ProductoControllerTest {
         assertEquals(400, respuesta.getStatusCodeValue());
         assertEquals("Error: Todos los campos obligatorios deben completarse", respuesta.getBody());
     }
+
     @Test
     void testCambioEstadoADeshabilitadoProducto() {
         // Datos de prueba
@@ -169,6 +210,7 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Cambio de status exitoso", respuesta.getBody());
     }
+
     @Test
     void testCambioEstadoAHabilitadoProducto() {
         // Datos de prueba
@@ -188,6 +230,7 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Cambio de status exitoso", respuesta.getBody());
     }
+
     @Test
     void testAgregarCantidadAlProducto() {
         // Datos de prueba
@@ -207,6 +250,7 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Stock incrementado exitosamente", respuesta.getBody());
     }
+
     @Test
     void testAgregarCantidadValorInvalido() {
         // Datos de prueba
@@ -226,6 +270,7 @@ class ProductoControllerTest {
         assertEquals(400, respuesta.getStatusCodeValue());
         assertEquals("Error: La cantidad a agregar debe ser mayor a cero", respuesta.getBody());
     }
+
     @Test
     void testDisminuirCantidadDelProducto() {
         // Datos de prueba
@@ -245,6 +290,7 @@ class ProductoControllerTest {
         assertEquals(200, respuesta.getStatusCodeValue());
         assertEquals("Stock decrementado exitosamente", respuesta.getBody());
     }
+
     @Test
     void testDisminuirCantidadSobreStockDisponible() {
         // Datos de prueba
@@ -263,34 +309,6 @@ class ProductoControllerTest {
         // Validación de resultados
         assertEquals(400, respuesta.getStatusCodeValue());
         assertEquals("Error: Stock insuficiente para realizar la operación", respuesta.getBody());
-    }
-    @Test
-    void testConsultaProductosSinStock() {
-        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de productos sin stock");
-
-        // Configuración del comportamiento simulado
-        when(productoService.obtenerProductos()).thenReturn(respuestaEsperada);
-
-        // Ejecución del caso de prueba
-        ResponseEntity<Object> respuesta = productoController.obtenerProductos(); // Supongamos que el método está en productoService
-
-        // Validación de resultados
-        assertEquals(200, respuesta.getStatusCodeValue());
-        assertEquals("Listado de productos sin stock", respuesta.getBody());
-    }
-    @Test
-    void testConsultaProductosConStockBajo() {
-        ResponseEntity<Object> respuestaEsperada = ResponseEntity.ok("Listado de productos con stock bajo");
-
-        // Configuración del comportamiento simulado
-        when(productoService.obtenerProductos()).thenReturn(respuestaEsperada);
-
-        // Ejecución del caso de prueba
-        ResponseEntity<Object> respuesta = productoController.obtenerProductos(); // Supongamos que el método está en productoService
-
-        // Validación de resultados
-        assertEquals(200, respuesta.getStatusCodeValue());
-        assertEquals("Listado de productos con stock bajo", respuesta.getBody());
     }
 
 }
