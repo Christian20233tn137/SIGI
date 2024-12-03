@@ -18,7 +18,6 @@ public class UsuarioDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Convierte el rol del usuario a una colección de GrantedAuthority
         return List.of(new SimpleGrantedAuthority(usuario.getRol().name()));
     }
 

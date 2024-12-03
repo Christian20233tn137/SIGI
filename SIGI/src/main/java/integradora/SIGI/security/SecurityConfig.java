@@ -41,39 +41,23 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login").permitAll()
 
                         // USUARIOS
-                        .requestMatchers("/usuario").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/usuario/all").hasAuthority("ROLE_ADMIN")
-
-                        // USUARIOS/CONSULTOR
-                        .requestMatchers("/usuario/all").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/usuario/{id}").hasAuthority("ROLE_CONSULTOR")
+                        .requestMatchers("/usuario/**").hasAuthority("ROLE_ADMIN")
 
                         // CATEGORIAS
-                        .requestMatchers("/categorias").permitAll()
-
-
-                        // CATEGORIAS/CONSULTOR
-                        .requestMatchers("/categorias/all").hasAuthority("ROLE_CONSULTOR")
-                        .requestMatchers("/categorias/activas").hasAuthority("ROLE_CONSULTOR")
+                        .requestMatchers("/categorias/**").hasAuthority("ROLE_ADMIN")
 
                         // PRODUCTOS
                         .requestMatchers("/producto/**").hasAuthority("ROLE_ADMIN")
 
-                        // PRODUCTOS/CONSULTOR
-                        .requestMatchers("/producto/all").hasAuthority("ROLE_CONSULTOR")
-                        .requestMatchers("/producto/activos").hasAuthority("ROLE_CONSULTOR")
-
                         // PROVEEDORES
                         .requestMatchers("/proveedor/**").hasAuthority("ROLE_ADMIN")
 
-                        // PROVEEDORES/CONSULTOR
-                        .requestMatchers("/proveedor/all").hasAuthority("ROLE_CONSULTOR")
-                        .requestMatchers("/proveedor/activos").hasAuthority("ROLE_CONSULTOR")
+                        // CONSULTOR: USUARIOS, CATEGORIAS, PROVEEDORES, PRODUCTOS
+                        .requestMatchers("/consultor/**").hasAuthority("ROLE_CONSULTOR")
 
-                        .requestMatchers("/usuario/send-email/**").permitAll()
-                        .requestMatchers("/usuario/verify-code/**").permitAll()
+                        .anyRequest().hasAuthority("ROLE_ADMIN")
 
-                        .anyRequest().authenticated()
+
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Agregar filtro JWT
         return http.build();

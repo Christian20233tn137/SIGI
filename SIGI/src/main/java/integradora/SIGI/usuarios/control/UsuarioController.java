@@ -22,12 +22,12 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<Message> getAllUsuarios() {
         return usuarioService.findAll();
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Object> saveUsuarios(@Validated(UsuarioDTO.Register.class) @RequestBody UsuarioDTO dto) {
         return usuarioService.saveUsuarios(dto);
     }

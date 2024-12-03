@@ -1,99 +1,65 @@
 package integradora.SIGI.security;
 
-import io.jsonwebtoken.MalformedJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
+import java.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final static Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
+
+    private final CustomUserDetailsService userDetailsService;
+
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public JwtRequestFilter(CustomUserDetailsService userDetailsService, JwtUtil jwtUtil) {
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-
-        // Obtención de la ruta de la solicitud para evitar aplicar el filtro a la ruta de login
-        String path = request.getRequestURI();
-        if (path.equals("/auth/login")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // Obtener el encabezado de autorización
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
+
         String username = null;
         String jwt = null;
 
-        // Verificar que el encabezado de autorización esté presente y empiece con "Bearer "
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             try {
-                // Extraemos el nombre de usuario desde el token
                 username = jwtUtil.extractUsername(jwt);
-                System.out.println("Username extraído del token: " + username);
-            } catch (IllegalArgumentException | MalformedJwtException e) {
-                logger.error("Token JWT inválido: " + e.getMessage());
+            } catch (Exception e) {
+                // Manejo de excepción si el token no es válido o está malformado
+                logger.error("Error al extraer el nombre de usuario del token: " + e.getMessage());
             }
         }
 
-        // Si el username no es nulo y no hay autenticación previa en el contexto de seguridad
+        // Validar el token y autenticar al usuario si el contexto de seguridad está vacío
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
 
-                // Extraer el rol, id y status del token
-                String role = jwtUtil.extractRole(jwt);
-                Long userId = jwtUtil.extractId(jwt);  // Extraer el ID
-                boolean userStatus = jwtUtil.extractStatus(jwt);  // Extraer el status
-
-                System.out.println("Rol extraído del token: " + role);
-                System.out.println("ID extraído del token: " + userId);
-                System.out.println("Estado extraído del token: " + userStatus);
-
-                // Verificar si el usuario está activo
-                if (!userStatus) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario deshabilitado");
-                    return;
-                }
-
-                // Agregar el prefijo ROLE_ al rol
-                if (role != null) {
-                    role = "ROLE_" + role.toUpperCase();  // Agregar el prefijo ROLE_
-                }
-
-                // Crear la autoridad a partir del rol extraído
-                List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
-
-                // Configurar la autenticación con el rol extraído y otros detalles
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, authorities);
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("Autenticación exitosa para el usuario: " + username);
-            } else {
-                System.out.println("Token JWT inválido para el usuario: " + username);
+            if (jwtUtil.validateToken(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
 
-        // Continuar con el siguiente filtro en la cadena de filtros
         filterChain.doFilter(request, response);
     }
 }
