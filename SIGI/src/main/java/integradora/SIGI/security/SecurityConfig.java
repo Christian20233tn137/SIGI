@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/usuario/**").hasAuthority("ROLE_ADMIN")
 
                         // CATEGORIAS
-                        .requestMatchers("/categorias/**").permitAll()
+                        .requestMatchers("/categorias/**").hasAuthority("ROLE_ADMIN")
 
                         // PRODUCTOS
                         .requestMatchers("/producto/**").hasAuthority("ROLE_ADMIN")
@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5501", "http://localhost:5501")); // Orígenes permitidos
+        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5501", "http://localhost:63342")); // Orígenes permitidos
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // Métodos permitidos
         configuration.setAllowedHeaders(List.of("*")); // Permitir todos los encabezados
         configuration.setAllowCredentials(true); // Permitir credenciales como cookies o tokens

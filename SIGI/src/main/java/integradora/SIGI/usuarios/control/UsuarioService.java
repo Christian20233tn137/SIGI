@@ -78,7 +78,7 @@ public class UsuarioService {
 
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
-        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_CONSULTOR, true);
+        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_ADMIN, true);
         usuarioRepository.save(usuario);
         return new ResponseEntity<>(new Message(usuario, "Usuario registrado exitosamente", TypesResponse.SUCCESS), HttpStatus.CREATED);
     }

@@ -18,7 +18,7 @@ document.querySelector('.login-form').addEventListener('submit', async (event) =
             const token = await response.text();
             // Guardar el token en el localStorage o sessionStorage
             localStorage.setItem('authToken', token);
-            window.location.href = '../Menu.html';  // Redirige a la página de menú
+            window.location.href = './Menu.html';  // Redirige a la página de menú
         } else {
             // Si las credenciales son incorrectas, se muestra el mensaje de error
             const errorText = await response.text();
