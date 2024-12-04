@@ -11,6 +11,9 @@ public class ProveedorDTO {
     @NotNull(groups = {Modify.class, ChangeStatus.class}, message = "Es necesario el id")
     private Long id;
 
+    @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el nombre")
+    @Size(max = 50, message = "El nombre no puede tener más de 50 caracteres")
+    private String name;
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el RFC")
     @Pattern(regexp = "^[A-ZÑ&]{3,4}\\d{6}[A-Z\\d]{3}$", message = "El RFC debe ser válido")
     private String rfc;
@@ -43,8 +46,9 @@ public class ProveedorDTO {
     // Constructores
     public ProveedorDTO() {}
 
-    public ProveedorDTO(Long id, String rfc, String direccion, String telefono, String email, Boolean status) {
+    public ProveedorDTO(Long id, String name, String rfc, String direccion, String telefono, String email, Boolean status) {
         this.id = id;
+        this.name = name;
         this.rfc = rfc;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -61,6 +65,12 @@ public class ProveedorDTO {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getRfc() {
         return rfc;
     }

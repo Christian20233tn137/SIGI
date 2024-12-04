@@ -44,6 +44,7 @@ public class ProveedorService {
         }
 
         Proveedor proveedor = new Proveedor(
+                dto.getName(),
                 dto.getRfc(),
                 dto.getDireccion(),
                 dto.getTelefono(),
@@ -93,6 +94,7 @@ public class ProveedorService {
         }
 
         Proveedor proveedor = proveedorOpt.get();
+        proveedor.setName(dto.getName());
         proveedor.setRfc(dto.getRfc());
         proveedor.setDireccion(dto.getDireccion());
         proveedor.setTelefono(dto.getTelefono());

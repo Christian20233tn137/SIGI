@@ -12,7 +12,8 @@ public class Proveedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name="name",columnDefinition = "VARCHAR(50)")
+    private String name;
     @Column(name="rfc", columnDefinition = "VARCHAR(13)")
     private String rfc;
 
@@ -44,7 +45,8 @@ public class Proveedor {
 
     }
 
-    public Proveedor(String rfc, String direccion, String telefono, String email, boolean status) {
+    public Proveedor(String name,String rfc, String direccion, String telefono, String email, boolean status) {
+        this.name = name;
         this.rfc = rfc;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -52,8 +54,9 @@ public class Proveedor {
         this.status = status;
     }
 
-    public Proveedor(Long id, String rfc, String direccion, String telefono, String email, boolean status) {
+    public Proveedor(Long id, String name, String rfc, String direccion, String telefono, String email, boolean status) {
         this.id = id;
+        this.name = name;
         this.rfc = rfc;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -67,6 +70,14 @@ public class Proveedor {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRfc() {
