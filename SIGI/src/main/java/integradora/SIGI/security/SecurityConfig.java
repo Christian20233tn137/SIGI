@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/usuario/**").hasAuthority("ROLE_ADMIN")
 
                         // CATEGORIAS
-                        .requestMatchers("/categorias/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/categorias/**").permitAll()
 
                         // PRODUCTOS
                         .requestMatchers("/producto/**").hasAuthority("ROLE_ADMIN")
@@ -55,7 +55,7 @@ public class SecurityConfig {
                         // CONSULTOR: USUARIOS, CATEGORIAS, PROVEEDORES, PRODUCTOS
                         .requestMatchers("/consultor/**").hasAuthority("ROLE_CONSULTOR")
 
-                        .anyRequest().hasAuthority("ROLE_ADMIN")
+                        .anyRequest().permitAll()
 
 
                 )

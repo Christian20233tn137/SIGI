@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {
-        fetch(API_URL)
+        fetch("http://localhost:8080/categorias/all")
             .then(response => response.json())
             .then(data => {
                 if (data.type === "SUCCESS") {
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mostrar el modal y el fondo
     function showModal() {
         document.querySelector('.modal').style.display = 'block';
-  }
+    }
 
     // Ocultar el modal y el fondo
     function closeModal() {
@@ -106,20 +106,20 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedProduct)
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.type === "SUCCESS") {
-                estadoCell.textContent = newStatus ? 'Activo' : 'Inactivo';
-                toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
-                toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
-            } else {
-                alert('Error al actualizar el estado del producto');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Hubo un problema al cambiar el estado del producto');
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.type === "SUCCESS") {
+                    estadoCell.textContent = newStatus ? 'Activo' : 'Inactivo';
+                    toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
+                    toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
+                } else {
+                    alert('Error al actualizar el estado del producto');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un problema al cambiar el estado del producto');
+            });
     }
 
     // Registrar un nuevo producto
@@ -150,19 +150,19 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productData)
         })
-        .then(response => response.json())
-        .then(data => {
-            alert('Producto registrado exitosamente');
-            closeModal(); // Cerrar el modal
-            document.getElementById('productName').value = '';
-            document.getElementById('productCategory').value = '';
-            document.getElementById('productPrice').value = '';
-            loadTable(); // Actualizar la tabla después de agregar el producto
-        })
-        .catch(error => {
-            alert('Error al registrar el producto');
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                alert('Producto registrado exitosamente');
+                closeModal(); // Cerrar el modal
+                document.getElementById('productName').value = '';
+                document.getElementById('productCategory').value = '';
+                document.getElementById('productPrice').value = '';
+                loadTable(); // Actualizar la tabla después de agregar el producto
+            })
+            .catch(error => {
+                alert('Error al registrar el producto');
+                console.error('Error:', error);
+            });
     });
 
     // Inicializar la tabla al cargar la página
