@@ -10,27 +10,22 @@ public class ProveedorDTO {
 
     @NotNull(groups = {Modify.class, ChangeStatus.class}, message = "Es necesario el id")
     private Long id;
-
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el nombre")
     @Size(max = 50, message = "El nombre no puede tener más de 50 caracteres")
     private String name;
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el RFC")
     @Pattern(regexp = "^[A-ZÑ&]{3,4}\\d{6}[A-Z\\d]{3}$", message = "El RFC debe ser válido")
     private String rfc;
-
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesaria la dirección")
     @Size(max = 100, message = "La dirección no puede tener más de 100 caracteres")
     private String direccion;
-
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el teléfono")
     @Pattern(regexp = "^\\d{10}$", message = "El teléfono debe contener 10 dígitos")
     private String telefono;
-
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el correo electrónico")
     @Email(message = "El correo electrónico debe ser válido")
     @Size(max = 20, message = "El correo no puede tener más de 20 caracteres")
     private String email;
-
     @NotNull(groups = {Modify.class, ChangeStatus.class}, message = "Es necesario el estado")
     private Boolean status;
 

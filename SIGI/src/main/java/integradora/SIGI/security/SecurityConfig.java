@@ -55,7 +55,7 @@ public class SecurityConfig {
                         // CONSULTOR: USUARIOS, CATEGORIAS, PROVEEDORES, PRODUCTOS
                         .requestMatchers("/consultor/**").hasAuthority("ROLE_CONSULTOR")
 
-                        .anyRequest().permitAll()
+                        .anyRequest().hasAuthority("ROLE_ADMIN")
 
 
                 )
@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5501", "http://localhost:63342")); // Orígenes permitidos
+        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:63342")); // Orígenes permitidos
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // Métodos permitidos
         configuration.setAllowedHeaders(List.of("*")); // Permitir todos los encabezados
         configuration.setAllowCredentials(true); // Permitir credenciales como cookies o tokens
