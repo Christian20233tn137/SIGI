@@ -73,34 +73,44 @@
 
         // Actualizar categoría
         @Transactional(rollbackFor = {SQLException.class})
-        public ResponseEntity<Object> actualizarCategoria(CategoriaDTO dto) {
-            logger.info("Iniciando actualización de categoría con id: {}", dto.getId());
+        public ResponseEntity<Object> actualizarCategoria(Long id, CategoriaDTO dto) {
+            logger.info("Iniciando actualización de categoría con id: {}", id);
 
+            // Asegurarse de que el ID en el DTO sea el del parámetro pasado por la URL
+            dto.setId(id);
+
+            // Validar el nombre de la categoría
             dto.setName(dto.getName().toLowerCase().trim());
-
             if (dto.getName().length() < 3) {
                 logger.warn("El nombre de la categoría es muy corto para actualizar: {}", dto.getName());
                 return new ResponseEntity<>(new Message("El nombre de la categoría no puede tener menos de 3 caracteres", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
             }
 
-            Optional<Categoria> categoriaOpt = repository.findById(dto.getId());
+            // Buscar la categoría por el ID
+            Optional<Categoria> categoriaOpt = repository.findById(id);
             if (!categoriaOpt.isPresent()) {
-                logger.warn("Categoría no encontrada con id: {}", dto.getId());
+                logger.warn("Categoría no encontrada con id: {}", id);
                 return new ResponseEntity<>(new Message("Categoría no encontrada", TypesResponse.WARNING), HttpStatus.NOT_FOUND);
             }
 
-            if (repository.findByNameIgnoreCaseAndIdNot(dto.getName(), dto.getId()).isPresent()) {
+            // Verificar si el nombre de la categoría ya existe
+            if (repository.findByNameIgnoreCaseAndIdNot(dto.getName(), id).isPresent()) {
                 logger.warn("El nombre de la categoría ya existe para otro id: {}", dto.getName());
                 return new ResponseEntity<>(new Message("El nombre de la categoría ya existe", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
             }
 
+            // Actualizar los datos de la categoría
             Categoria categoria = categoriaOpt.get();
             categoria.setName(dto.getName());
             categoria.setDescription(dto.getDescription());
+
+            // Guardar los cambios en la base de datos
             repository.save(categoria);
             logger.info("Categoría actualizada exitosamente: {}", categoria.getName());
+
             return new ResponseEntity<>(new Message(categoria, "Categoría actualizada exitosamente", TypesResponse.SUCCESS), HttpStatus.OK);
         }
+
 
         // Cambiar estado de categoría (habilitar/deshabilitar)
         @Transactional(rollbackFor = {SQLException.class})

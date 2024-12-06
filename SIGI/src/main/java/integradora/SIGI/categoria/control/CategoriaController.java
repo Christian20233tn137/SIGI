@@ -33,10 +33,14 @@ public class CategoriaController {
         return categoriaService.registrarCategoria(categoriaDTO);
     }
 
-    @PutMapping
-    public ResponseEntity<Object> actualizarCategoria(@Validated(CategoriaDTO.Modify.class) @RequestBody CategoriaDTO categoriaDTO) {
-        return categoriaService.actualizarCategoria(categoriaDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> actualizarCategoria(@PathVariable("id") Long id,
+                                                      @Validated(CategoriaDTO.Modify.class) @RequestBody CategoriaDTO dto) {
+        // Asignar el id de la URL al DTO
+        dto.setId(id);
+        return categoriaService.actualizarCategoria(id, dto); // Llamada pasando el id y el dto
     }
+
 
     @PutMapping("/cambiar-estado")
     public ResponseEntity<Object> cambiarEstadoCategoria(@RequestBody CategoriaDTO categoriaDTO) {

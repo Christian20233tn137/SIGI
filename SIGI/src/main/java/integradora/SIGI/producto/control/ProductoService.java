@@ -58,24 +58,30 @@ public class ProductoService {
 
     // Actualizar producto
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Object> actualizarProducto(ProductoDTO dto) {
-        Optional<Producto> productoOpt = repository.findById(dto.getId());
+    public ResponseEntity<Object> actualizarProducto(Long id, ProductoDTO dto) {
+        // Buscar el producto por el ID
+        Optional<Producto> productoOpt = repository.findById(id);
         if (!productoOpt.isPresent()) {
             return new ResponseEntity<>(new Message("Producto no encontrado", TypesResponse.WARNING), HttpStatus.NOT_FOUND);
         }
 
-        Producto producto = productoOpt.get();
-        if (repository.existsByNombreIgnoreCaseAndIdNot(dto.getNombre(), dto.getId())) {
+        // Verificar si el nombre ya existe para otro producto
+        if (repository.existsByNombreIgnoreCaseAndIdNot(dto.getNombre(), id)) {
             return new ResponseEntity<>(new Message("El nombre del producto ya existe", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
         }
 
+        // Obtener el producto y actualizar los valores
+        Producto producto = productoOpt.get();
         producto.setNombre(dto.getNombre().toLowerCase().trim());
         producto.setCantidad(dto.getCantidad());
         producto.setPrecioUnitario(dto.getPrecioUnitario());
+
+        // Guardar los cambios en la base de datos
         repository.save(producto);
 
         return new ResponseEntity<>(new Message(producto, "Producto actualizado exitosamente", TypesResponse.SUCCESS), HttpStatus.OK);
     }
+
 
     // Cambiar estado de producto
     @Transactional(rollbackFor = {SQLException.class})

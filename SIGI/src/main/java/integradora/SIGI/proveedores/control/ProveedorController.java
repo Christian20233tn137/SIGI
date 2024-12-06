@@ -33,8 +33,7 @@ public class ProveedorController {
 
     // Actualizar proveedor
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateProveedor(@PathVariable("id") Long id,
-                                                  @Validated(ProveedorDTO.Modify.class) @RequestBody ProveedorDTO dto) {
+    public ResponseEntity<Object> updateProveedor(@PathVariable("id") Long id, @Validated(ProveedorDTO.Modify.class) @RequestBody ProveedorDTO dto) {
         // Asignar el id de la URL al DTO
         dto.setId(id);
         return proveedorService.actualizarProveedor(id, dto); // Pasar id y dto

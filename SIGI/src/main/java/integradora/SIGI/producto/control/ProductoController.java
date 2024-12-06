@@ -37,10 +37,13 @@ public class ProductoController {
     }
 
     // Actualizar producto
-    @PutMapping
-    public ResponseEntity<Object> actualizarProducto(@Validated(ProductoDTO.Modify.class) @RequestBody ProductoDTO dto) {
-        return productoService.actualizarProducto(dto);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> actualizarProducto(@PathVariable("id") Long id, @Validated(ProductoDTO.Modify.class) @RequestBody ProductoDTO dto) {
+        // Asignar el id de la URL al DTO
+        dto.setId(id);
+        return productoService.actualizarProducto(id, dto); // Llamada pasando el id y el dto
     }
+
 
     // Cambiar estado de producto
     @PutMapping("/estado")

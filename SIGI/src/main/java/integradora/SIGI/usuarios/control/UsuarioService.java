@@ -29,7 +29,6 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final EmailSender emailSender;
 
     @Autowired
@@ -84,7 +83,8 @@ public class UsuarioService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Object> updateUsuarios(UsuarioDTO dto) {
+    public ResponseEntity<Object> updateUsuarios(Long id, UsuarioDTO dto) {
+        // Normalización de datos en el DTO
         dto.setName(dto.getName().toLowerCase().trim());
 
         if (dto.getName().length() > 30) {
@@ -95,29 +95,33 @@ public class UsuarioService {
             return new ResponseEntity<>(new Message("El apellido del Usuario no puede tener más de 30 caracteres", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
         }
 
-        Optional<Usuario> usuarioOpt = usuarioRepository.findById(dto.getId());
+        // Verificar si el usuario existe
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (!usuarioOpt.isPresent()) {
             return new ResponseEntity<>(new Message("Usuario no encontrado", TypesResponse.WARNING), HttpStatus.NOT_FOUND);
         }
 
-        if (usuarioRepository.findByEmailIgnoreCaseAndIdNot(dto.getEmail(), dto.getId()).isPresent()) {
+        // Verificar si el email ya está en uso para otro usuario
+        if (usuarioRepository.findByEmailIgnoreCaseAndIdNot(dto.getEmail(), id).isPresent()) {
             return new ResponseEntity<>(new Message("El email del usuario ya existe", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
         }
 
+        // Validaciones adicionales
         if (dto.getTelephone().length() > 10) {
             return new ResponseEntity<>(new Message("El número de teléfono del Usuario no puede tener más de 10 caracteres", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
         }
 
-        if (dto.getPassword().length() < 8) {
-            return new ResponseEntity<>(new Message("La contraseña del Usuario no puede tener menos de 8 caracteres", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
-        }
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
+        // Actualización de los datos del usuario
         Usuario usuario = usuarioOpt.get();
         usuario.setName(dto.getName());
         usuario.setLastname(dto.getLastname());
         usuario.setEmail(dto.getEmail());
         usuario.setTelephone(dto.getTelephone());
-        usuario.setPassword(dto.getPassword());
+        usuario.setPassword(encodedPassword);
+
+        // Guardar cambios
         usuarioRepository.save(usuario);
 
         return new ResponseEntity<>(new Message(usuario, "Usuario actualizado exitosamente", TypesResponse.SUCCESS), HttpStatus.OK);

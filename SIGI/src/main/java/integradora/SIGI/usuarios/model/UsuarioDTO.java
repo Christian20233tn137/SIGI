@@ -4,9 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class UsuarioDTO {
-    @NotNull(groups = {UsuarioDTO.Modify.class, UsuarioDTO.ChangeStatus.class})
-    private Long id;
 
+    private Long id;
     @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
     private String name;
 
@@ -29,6 +28,16 @@ public class UsuarioDTO {
     private Boolean status; // Atributo para habilitar/deshabilitar categorías
 
     public UsuarioDTO() {
+    }
+
+    public UsuarioDTO(String name, String lastname, String email, String telephone, String password, String code, Boolean status) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.telephone = telephone;
+        this.password = password;
+        this.code = code;
+        this.status = status;
     }
 
     public Long getId() {

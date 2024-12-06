@@ -6,9 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public class CategoriaDTO {
 
-    @NotNull(groups = {Modify.class, ChangeStatus.class}, message = "Es necesario el id")
     private Long id;
-
     @NotBlank(groups = {Modify.class, Register.class}, message = "Es necesario el nombre")
     @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
     private String name;
@@ -33,8 +31,7 @@ public class CategoriaDTO {
     // Constructores
     public CategoriaDTO() {}
 
-    public CategoriaDTO(Long id, String name, String description) {
-        this.id = id;
+    public CategoriaDTO(String name, String description) {
         this.name = name;
         this.description = description;
     }

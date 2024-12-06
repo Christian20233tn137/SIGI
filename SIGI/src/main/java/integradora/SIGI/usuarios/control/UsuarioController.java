@@ -32,10 +32,13 @@ public class UsuarioController {
         return usuarioService.saveUsuarios(dto);
     }
 
-    @PutMapping
-    public ResponseEntity<Object> updateUsuarios(@Validated(UsuarioDTO.Modify.class) @RequestBody UsuarioDTO dto) {
-        return usuarioService.updateUsuarios(dto);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUsuario(@PathVariable("id") Long id, @Validated(UsuarioDTO.Modify.class) @RequestBody UsuarioDTO dto) {
+        // Asignar el id de la URL al DTO
+        dto.setId(id);
+        return usuarioService.updateUsuarios(id, dto); // Llamada pasando el id y el dto
     }
+
 
     @GetMapping("/{id}")
     public Optional<Usuario> getUsuarioById(@PathVariable Long id) {

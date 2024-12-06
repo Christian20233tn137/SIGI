@@ -4,9 +4,7 @@ import jakarta.validation.constraints.*;
 
 public class ProductoDTO {
 
-    @NotNull(groups = {Modify.class, ChangeStatus.class}, message = "Es necesario el id")
     private Long id;
-
     @NotBlank(groups = {Register.class, Modify.class}, message = "El nombre del producto es obligatorio")
     @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
     private String nombre;
@@ -30,8 +28,7 @@ public class ProductoDTO {
     // Constructores
     public ProductoDTO() {}
 
-    public ProductoDTO(Long id, String nombre, Integer cantidad, Double precioUnitario, boolean status) {
-        this.id = id;
+    public ProductoDTO(String nombre, Integer cantidad, Double precioUnitario, boolean status) {
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
