@@ -1,6 +1,7 @@
 package integradora.SIGI.proveedores.control;
 
 import integradora.SIGI.proveedores.model.ProveedorDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,10 +32,15 @@ public class ProveedorController {
     }
 
     // Actualizar proveedor
-    @PutMapping
-    public ResponseEntity<Object> updateProveedor(@Validated(ProveedorDTO.Modify.class) @RequestBody ProveedorDTO dto) {
-        return proveedorService.actualizarProveedor(dto);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateProveedor(@PathVariable("id") Long id,
+                                                  @Validated(ProveedorDTO.Modify.class) @RequestBody ProveedorDTO dto) {
+        // Asignar el id de la URL al DTO
+        dto.setId(id);
+        return proveedorService.actualizarProveedor(id, dto); // Pasar id y dto
     }
+
+
 
     // Obtener proveedores activos
     @GetMapping("/activos")

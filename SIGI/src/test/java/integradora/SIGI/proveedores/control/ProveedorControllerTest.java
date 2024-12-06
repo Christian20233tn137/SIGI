@@ -4,15 +4,18 @@ import integradora.SIGI.proveedores.model.ProveedorDTO;
 import integradora.SIGI.usuarios.model.UsuarioDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class) // Añade esta anotación para activar los mocks de Mockito
 class ProveedorControllerTest {
 
     @Mock
@@ -184,7 +187,9 @@ class ProveedorControllerTest {
         proveedorIncompleto.setDireccion("Avenida Principal 789");
         proveedorIncompleto.setTelefono("5551234567");
         proveedorIncompleto.setEmail(null); // Falta el campo email
+        proveedorIncompleto.setStatus(true);
 
+        // Respuesta esperada para campos incompletos
         ResponseEntity<Object> respuestaEsperada = ResponseEntity.badRequest().body("Error: Todos los campos obligatorios deben completarse");
 
         // Configuración del comportamiento simulado

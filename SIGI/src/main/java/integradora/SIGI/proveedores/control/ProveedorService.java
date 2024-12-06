@@ -76,33 +76,46 @@ public class ProveedorService {
 
     // Actualizar proveedor
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Object> actualizarProveedor(ProveedorDTO dto) {
-        logger.info("Iniciando actualización de proveedor con ID: {}", dto.getId());
+    public ResponseEntity<Object> actualizarProveedor(Long id, ProveedorDTO dto) {
+        // El ID ahora se recibe como argumento del método
+        logger.info("Iniciando actualización de proveedor con ID: {}", id);
 
+        // Asegurarse de que el ID en el DTO sea el del parámetro pasado por la URL
+        dto.setId(id);
+
+        // Configuración de datos en el DTO
         dto.setRfc(dto.getRfc().toUpperCase().trim());
         dto.setEmail(dto.getEmail().toLowerCase().trim());
 
-        Optional<Proveedor> proveedorOpt = repository.findById(dto.getId());
+        // Buscar proveedor por el ID proporcionado
+        Optional<Proveedor> proveedorOpt = repository.findById(id);
         if (!proveedorOpt.isPresent()) {
-            logger.warn("Proveedor no encontrado con ID: {}", dto.getId());
+            logger.warn("Proveedor no encontrado con ID: {}", id);
             return new ResponseEntity<>(new Message("Proveedor no encontrado", TypesResponse.WARNING), HttpStatus.NOT_FOUND);
         }
 
-        if (repository.findByRfcIgnoreCaseAndIdNot(dto.getRfc(), dto.getId()).isPresent()) {
+        // Verificación de que el RFC no esté duplicado para otro proveedor
+        if (repository.findByRfcIgnoreCaseAndIdNot(dto.getRfc(), id).isPresent()) {
             logger.warn("El RFC del proveedor ya existe para otro ID: {}", dto.getRfc());
             return new ResponseEntity<>(new Message("El RFC del proveedor ya existe", TypesResponse.WARNING), HttpStatus.BAD_REQUEST);
         }
 
+        // Actualización de los datos del proveedor
         Proveedor proveedor = proveedorOpt.get();
         proveedor.setName(dto.getName());
         proveedor.setRfc(dto.getRfc());
         proveedor.setDireccion(dto.getDireccion());
         proveedor.setTelefono(dto.getTelefono());
         proveedor.setEmail(dto.getEmail());
+
+        // Guardar los cambios en la base de datos
         repository.save(proveedor);
         logger.info("Proveedor actualizado exitosamente: {}", proveedor.getRfc());
+
+        // Responder con el proveedor actualizado y un mensaje de éxito
         return new ResponseEntity<>(new Message(proveedor, "Proveedor actualizado exitosamente", TypesResponse.SUCCESS), HttpStatus.OK);
     }
+
 
     // Cambiar estado del proveedor (habilitar/deshabilitar)
     @Transactional(rollbackFor = {SQLException.class})
