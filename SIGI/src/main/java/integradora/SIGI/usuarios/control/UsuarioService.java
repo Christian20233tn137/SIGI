@@ -77,7 +77,7 @@ public class UsuarioService {
 
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
-        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_ADMIN, true);
+        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_CONSULTOR, true);
         usuarioRepository.save(usuario);
         return new ResponseEntity<>(new Message(usuario, "Usuario registrado exitosamente", TypesResponse.SUCCESS), HttpStatus.CREATED);
     }
@@ -159,14 +159,14 @@ public class UsuarioService {
             numberString.append(digit);
         }
 
-        Usuario user = optional.get();
-        user.setCode(numberString.toString());
-        user = usuarioRepository.saveAndFlush(user);
-        if(user == null){
+        Usuario usuario = optional.get();
+        usuario.setCode(numberString.toString());
+        usuario = usuarioRepository.saveAndFlush(usuario);
+        if(usuario == null){
             return new ResponseEntity<>(new Message("Código no registrado", TypesResponse.ERROR), HttpStatus.BAD_REQUEST);
         }
 
-        emailSender.sendSimpleMessage(user.getEmail(),
+        emailSender.sendSimpleMessage(usuario.getEmail(),
                 "Sistema Prueba | Solicitud de restablecimiento de contraseña",
                 "<!DOCTYPE html>\n" +
                         "<html xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" lang=\"en\">\n" +
@@ -299,7 +299,7 @@ public class UsuarioService {
                         "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                         "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"pad\" style=\"padding-left:45px;padding-right:45px;padding-top:10px;\">\n" +
                         "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"color:#393d47;font-family:'Cabin',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:36px;line-height:200%;text-align:center;mso-line-height-alt:72px;\">\n" +
-                        "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p style=\"margin: 0; word-break: break-word;\"><span style=\"word-break: break-word; color: #aa67cf;\">"+user.getCode()+"</span></p>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p style=\"margin: 0; word-break: break-word;\"><span style=\"word-break: break-word; color: #aa67cf;\">"+usuario.getCode()+"</span></p>\n" +
                         "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                         "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +

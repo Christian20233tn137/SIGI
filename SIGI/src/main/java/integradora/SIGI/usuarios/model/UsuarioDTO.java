@@ -12,7 +12,7 @@ public class UsuarioDTO {
     @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
     private String lastname;
 
-    @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
+    @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class, FindByEmail.class,VerifyCode.class})
     private String email;
 
     @NotBlank(groups = {UsuarioDTO.Register.class, UsuarioDTO.Modify.class})
