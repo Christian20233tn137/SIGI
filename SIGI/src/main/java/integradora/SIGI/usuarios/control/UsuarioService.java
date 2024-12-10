@@ -77,7 +77,7 @@ public class UsuarioService {
 
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
-        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_CONSULTOR, true);
+        Usuario usuario = new Usuario(dto.getName(), dto.getLastname(), dto.getEmail(), dto.getTelephone(), encodedPassword, Rol.ROLE_ADMIN, true);
         usuarioRepository.save(usuario);
         return new ResponseEntity<>(new Message(usuario, "Usuario registrado exitosamente", TypesResponse.SUCCESS), HttpStatus.CREATED);
     }
@@ -340,6 +340,26 @@ public class UsuarioService {
         }
 
         return new ResponseEntity<>(new Message("Verificado", TypesResponse.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Message> changePassword(UsuarioDTO dto) {
+        // Buscar el usuario por email
+        Optional<Usuario> optional = usuarioRepository.findByEmailIgnoreCase(dto.getEmail());
+        if (!optional.isPresent()) {
+            return new ResponseEntity<>(new Message("Usuario no encontrado", TypesResponse.WARNING), HttpStatus.NOT_FOUND);
+        }
+
+        Usuario usuario = optional.get();
+
+        // Actualizar la contraseña del usuario
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+        usuario.setPassword(encodedPassword);
+
+        // Guardar los cambios
+        usuarioRepository.save(usuario);
+
+        return new ResponseEntity<>(new Message("Contraseña actualizada con éxito", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
 }

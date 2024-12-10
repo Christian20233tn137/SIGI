@@ -55,7 +55,7 @@ public class SecurityConfig {
                         // CONSULTOR: USUARIOS, CATEGORIAS, PROVEEDORES, PRODUCTOS, MANDAR CORREO Y VERIFICAR CORREO
                         .requestMatchers("/consultor/all/", "/consultor/activos/Productos").hasAuthority("ROLE_CONSULTOR")
 
-                        .requestMatchers("/consultor/send-email", "/consultor/verify-code").permitAll()
+                        .requestMatchers("/consultor/send-email", "/consultor/verify-code" , "/consultor/change-password").permitAll()
 
 
                         .anyRequest().hasAuthority("ROLE_ADMIN")
