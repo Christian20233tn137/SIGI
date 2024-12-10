@@ -22,12 +22,12 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Message> getAllUsuarios() {
         return usuarioService.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Object> saveUsuarios(@Validated(UsuarioDTO.Register.class) @RequestBody UsuarioDTO dto) {
         return usuarioService.saveUsuarios(dto);
     }
@@ -39,7 +39,6 @@ public class UsuarioController {
         return usuarioService.updateUsuarios(id, dto); // Llamada pasando el id y el dto
     }
 
-
     @GetMapping("/{id}")
     public Optional<Usuario> getUsuarioById(@PathVariable Long id) {
         return usuarioService.findById(id);
@@ -50,15 +49,6 @@ public class UsuarioController {
         return usuarioService.changeStatusUsuario(usuarioDTO);
     }
 
-    @PostMapping("/send-email")
-    public ResponseEntity<Object> save(@Validated({UsuarioDTO.FindByEmail.class}) @RequestBody UsuarioDTO dto){
-        return usuarioService.sendEmail(dto);
-    }
-
-    @PostMapping("/verify-code")
-    public ResponseEntity<Object> verifyCode(@Validated({UsuarioDTO.VerifyCode.class}) @RequestBody UsuarioDTO dto){
-        return usuarioService.verifyCode(dto);
-    }
 
 }
  
